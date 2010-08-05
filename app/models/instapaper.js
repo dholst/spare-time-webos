@@ -14,5 +14,17 @@ var Instapaper = Class.create({
     else {
       success()
     }
+  },
+
+  getAllUnread: function(success, failure) {
+    new Ajax.Request("http://www.instapaper.com/u", {
+      method: "get",
+      onSuccess: this.parseUnreadItems.bind(this, success),
+      onFailure: failure
+    })
+  },
+
+  parseUnreadItems: function(success, response) {
+    console.log(response.responseText)
   }
 })
