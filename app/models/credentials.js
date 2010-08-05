@@ -1,6 +1,23 @@
 var Credentials = Class.create({
   initialize: function() {
-    this.username = new Mojo.Model.Cookie("username").get()
-    this.password = new Mojo.Model.Cookie("password").get()
+    this.username = this.usernameCookie().get()
+    this.password = this.passwordCookie().get()
+  },
+
+  save: function() {
+    this.usernameCookie().put(this.username)
+    this.passwordCookie().put(this.password)
+  },
+
+  usernameCookie: function() {
+    return this.getCookie("username")
+  },
+
+  passwordCookie: function() {
+    return this.getCookie("password")
+  },
+
+  getCookie: function(name) {
+    return new Mojo.Model.Cookie(name)
   }
 })
