@@ -25,6 +25,16 @@ var Instapaper = Class.create({
   },
 
   parseUnreadItems: function(success, response) {
-    console.log(response.responseText)
+    var items = []
+    var div = document.createElement("div")
+    div.innerHTML = response.responseText
+
+    $(div).select("#bookmark_list .tableViewCell").each(function(rawItem) {
+      var item = {}
+      item.title = rawItem.down("a.tableViewCellTitleLink").innerHTML.replace(/&nbsp;/g, ' ')
+      items.push(item)
+    })
+
+    success(items)
   }
 })
