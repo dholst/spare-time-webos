@@ -60,3 +60,17 @@
 .palm-row .unread-item {
   padding-bottom: 5px;
 }
+
+.palm-page-header .my-right-icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 50px;
+    height: 50px;
+    z-index: 19301;
+}
+
+.palm-page-header #refresh {
+    background: url(../images/refresh.png) no-repeat center;
+}
+

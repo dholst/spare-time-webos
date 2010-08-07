@@ -49,25 +49,48 @@ var TextAssistant = Class.create(BaseAssistant, {
 
   handlePopupChoice: function(choice) {
     var url
-    
+    var success
+
     if(choice == 'Archive') {
       url = this.item.archiveUrl
-    } 
-    
+
+      success = function() {
+        this.controller.stageController.popScene()
+      }.bind(this)
+    }
+
     if(choice == 'Delete') {
       url = this.item.deleteUrl
+
+      success = function() {
+        this.controller.stageController.popScene()
+      }.bind(this)
     }
-    
+
     if(choice == 'Star') {
       url = this.item.starUrl
-    } 
-    
+
+      success = function() {
+        this.item.unstarUrl = this.item.starUrl
+      }.bind(this)
+    }
+
     if(choice == 'Unstar') {
       url = this.item.unstarUrl
-    } 
-    
+
+      success = function() {
+        this.item.starUrl = this.item.unstarUrl
+      }.bind(this)
+    }
+
     if(url) {
-      new Ajax.Request(url, {method: "get"})
+      this.spinnerOn("Working...")
+
+      new Ajax.Request(url, {
+        method: "get",
+        onSuccess: success,
+        onComplete: function() {this.spinnerOff()}.bind(this)
+      })
     }
   }
 })
