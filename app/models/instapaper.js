@@ -31,14 +31,28 @@ var Instapaper = Class.create({
 
     $(div).select("#bookmark_list .tableViewCell").each(function(rawItem) {
       var item = {}
-      var title = rawItem.down("a.tableViewCellTitleLink")
-      var host = rawItem.down("span.host")
-      var textUrl = rawItem.down("a.textButton")
 
+      var title = rawItem.down("a.tableViewCellTitleLink")
       item.title = title ? title.innerHTML.unescapeHTML().replace(/&nbsp;/g, ' ') : "Unknown"
       item.url = title ? title.href : null
-      item.host = host ? host.innerHTML : ""
+
+      var host = rawItem.down("span.host")
+      item.host = host ? host.innerHTML.strip() : ""
+
+      var textUrl = rawItem.down("a.textButton")
       item.textUrl = "http://www.instapaper.com/m?u=" + escape(item.url)
+
+      var deleteUrl = rawItem.down("a.deleteLink")
+      item.deleteUrl = deleteUrl ? deleteUrl.href.replace(/file:\/\//, 'http://www.instapaper.com') : null
+
+      var archiveUrl = rawItem.down("a.archiveButton")
+      item.archiveUrl = archiveUrl ? archiveUrl.href.replace(/file:\/\//, 'http://www.instapaper.com') : null
+
+      var starUrl = rawItem.down("a.starToggleUnstarred")
+      item.starUrl = starUrl && starUrl.style.display != 'none' ? starUrl.href.replace(/file:\/\//, 'http://www.instapaper.com') : null
+
+      var unstarUrl = rawItem.down("a.starToggleStarred")
+      item.unstarUrl = unstarUrl && unstarUrl.style.display != 'none' ? unstarUrl.href.replace(/file:\/\//, 'http://www.instapaper.com') : null
 
       items.push(item)
     })

@@ -33,6 +33,6 @@ var UnreadAssistant = Class.create(BaseAssistant, {
   },
 
   itemTapped: function(event) {
-    this.controller.stageController.pushScene("text", event.item.textUrl)
+    this.controller.stageController.pushScene("text", event.item)
   }
 })
