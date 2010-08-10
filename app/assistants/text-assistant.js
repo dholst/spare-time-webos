@@ -55,7 +55,7 @@ var TextAssistant = Class.create(BaseAssistant, {
       url = this.item.archiveUrl
 
       success = function() {
-        this.controller.stageController.popScene()
+        this.controller.stageController.popScene(true)
       }.bind(this)
     }
 
@@ -63,7 +63,7 @@ var TextAssistant = Class.create(BaseAssistant, {
       url = this.item.deleteUrl
 
       success = function() {
-        this.controller.stageController.popScene()
+        this.controller.stageController.popScene(true)
       }.bind(this)
     }
 
@@ -72,6 +72,7 @@ var TextAssistant = Class.create(BaseAssistant, {
 
       success = function() {
         this.item.unstarUrl = this.item.starUrl
+        this.item.starUrl = null
       }.bind(this)
     }
 
@@ -80,6 +81,7 @@ var TextAssistant = Class.create(BaseAssistant, {
 
       success = function() {
         this.item.starUrl = this.item.unstarUrl
+        this.item.unstarUrl = null
       }.bind(this)
     }
 

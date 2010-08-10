@@ -12,5 +12,6 @@
   {source: "app/assistants/credentials-assistant.js"},
   {source: "app/assistants/login-assistant.js"},
   {source: "app/assistants/unread-assistant.js"},
-  {source: "app/assistants/text-assistant.js"}
+  {source: "app/assistants/text-assistant.js"},
+  {source: "app/assistants/help-assistant.js"}
 ]

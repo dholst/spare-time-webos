@@ -22,6 +22,6 @@ var LoginAssistant = Class.create(BaseAssistant, {
   },
 
   loginFailure: function() {
-    this.controller.stageController.swapScene("credentials", this.credentials)
+    this.controller.stageController.swapScene("credentials", this.credentials, true)
   }
 })

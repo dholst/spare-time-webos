@@ -1,7 +1,8 @@
 var CredentialsAssistant = Class.create(BaseAssistant, {
-  initialize: function($super, credentials) {
+  initialize: function($super, credentials, showMessage) {
     $super()
     this.credentials = credentials
+    this.showMessage = showMessage
     this.button = {buttonLabel: "Login"}
   },
 
@@ -14,6 +15,7 @@ var CredentialsAssistant = Class.create(BaseAssistant, {
   activate: function($super) {
     $super()
     this.controller.get("password").mojo.setConsumesEnterKey(false)
+    this.controller.get("login-failure")[this.showMessage ? "show" : "hide"]()
   },
 
   cleanup: function($super) {

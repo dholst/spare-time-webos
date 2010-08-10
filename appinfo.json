@@ -1,9 +1,9 @@
 {
 	"id": "com.semicolonapps.simplereader",
-	"version": "0.1.0",
+	"version": "0.0.1",
 	"vendor": "SemicolonApps",
 	"type": "web",
 	"main": "index.html",
 	"title": "Simple Reader",
-	"icon": "icon.png"
+	"icon": "images/icon.png"
 }

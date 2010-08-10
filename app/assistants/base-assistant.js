@@ -1,6 +1,11 @@
 var BaseAssistant = Class.create({
   setup: function() {
     this.controller.setupWidget("spinner", {spinnerSize: Mojo.Widget.spinnerLarge}, {})
+    this.controller.setupWidget(
+      Mojo.Menu.appMenu, 
+      {omitDefaultItems: true}, 
+      {visible: true, items: [Mojo.Menu.editItem, {label: "Help", command: Mojo.Menu.helpCmd}]}
+    )
   },
 
   ready: function() {
@@ -37,6 +42,15 @@ var BaseAssistant = Class.create({
       message.remove()
       this.controller.sceneElement.querySelector(".spinner").mojo.stop()
       this.controller.get("spinner-scrim").hide()
+    }
+  },
+  
+  handleCommand: function(event) {
+    if(Mojo.Event.command === event.type) {
+      if(Mojo.Menu.helpCmd == event.command) {
+        this.controller.stageController.pushScene("help")
+        event.stop()
+      }
     }
   }
 })

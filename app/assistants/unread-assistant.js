@@ -3,6 +3,7 @@ var UnreadAssistant = Class.create(BaseAssistant, {
     $super()
     this.instapaper = new Instapaper()
     this.unread = {items: []}
+    this.firstTime = true
   },
 
   setup: function($super) {
@@ -17,9 +18,9 @@ var UnreadAssistant = Class.create(BaseAssistant, {
     this.controller.stopListening("unread", Mojo.Event.listTap, this.itemTapped)
   },
 
-  activate: function($super) {
+  activate: function($super, refresh) {
     $super()
-    this.refresh()
+    if(refresh || this.firstTime) this.refresh()
   },
 
   itemsRetrieved: function(unreadItems) {
@@ -36,8 +37,9 @@ var UnreadAssistant = Class.create(BaseAssistant, {
   itemTapped: function(event) {
     this.controller.stageController.pushScene("text", event.item)
   },
-  
+
   refresh: function() {
+    this.firstTime = false
     this.spinnerOn("getting unread articles...")
     this.instapaper.getAllUnread(this.itemsRetrieved.bind(this), this.retrieveFailure.bind(this))
   }
