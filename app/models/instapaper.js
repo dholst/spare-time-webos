@@ -33,7 +33,7 @@ var Instapaper = Class.create({
       var item = {}
 
       var title = rawItem.down("a.tableViewCellTitleLink")
-      item.title = title ? title.innerHTML.unescapeHTML().replace(/&nbsp;/g, ' ') : "Unknown"
+      item.title = title ? title.innerHTML.unescapeHTML().replace(/&nbsp;/g, ' ') : ""
       item.url = title ? title.href : null
 
       var host = rawItem.down("span.host")

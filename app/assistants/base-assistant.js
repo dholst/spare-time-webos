@@ -4,7 +4,14 @@ var BaseAssistant = Class.create({
     this.controller.setupWidget(
       Mojo.Menu.appMenu, 
       {omitDefaultItems: true}, 
-      {visible: true, items: [Mojo.Menu.editItem, {label: "Help", command: Mojo.Menu.helpCmd}]}
+      {
+        visible: true, 
+        items: [
+          Mojo.Menu.editItem, 
+          {label: "Logout", command: "logout"},
+          {label: "Help", command: Mojo.Menu.helpCmd}
+        ]
+      }
     )
   },
 
@@ -50,6 +57,13 @@ var BaseAssistant = Class.create({
       if(Mojo.Menu.helpCmd == event.command) {
         this.controller.stageController.pushScene("help")
         event.stop()
+      }
+      if("logout" == event.command) {
+        var creds = new Credentials()
+        creds.username = null
+        creds.password = null
+        creds.save()
+        this.controller.stageController.swapScene("login")
       }
     }
   }
