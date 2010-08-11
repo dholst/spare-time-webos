@@ -31,7 +31,8 @@ var UnreadAssistant = Class.create(BaseAssistant, {
   },
 
   retrieveFailure: function() {
-    console.log("WTF")
+    this.spinnerOff()
+    this.controller.stageController.pushScene("bail", "Unable to retrieve unread items")
   },
 
   itemTapped: function(event) {

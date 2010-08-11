@@ -2,10 +2,6 @@ var TextAssistant = Class.create(BaseAssistant, {
   initialize: function($super, item) {
     $super()
     this.item = item
-
-    for(foo in item) {
-      console.log(foo + " = " + item[foo])
-    }
   },
 
   setup: function($super) {
