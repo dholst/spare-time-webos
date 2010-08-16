@@ -1,6 +1,6 @@
 StageAssistant = Class.create({
   setup: function() {
-    SimpleReader.Metrix.postDeviceData()
+    SpareTime.Metrix.postDeviceData()
     this.controller.pushScene("login")
   }
 })

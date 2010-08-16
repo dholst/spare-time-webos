@@ -1,9 +1,10 @@
 {
-	"id": "com.semicolonapps.simplereader",
+	"id": "com.semicolonapps.sparetime",
 	"version": "0.0.1",
 	"vendor": "SemicolonApps",
 	"type": "web",
 	"main": "index.html",
-	"title": "Simple Reader",
-	"icon": "images/icon.png"
+	"title": "Spare Time",
+	"icon": "images/icon.png",
+	"splashicon": "icon_orig.png"
 }

@@ -1,3 +1,3 @@
-var SimpleReader = {
+var SpareTime = {
   Metrix: new Metrix()
 }

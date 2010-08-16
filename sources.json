@@ -3,7 +3,7 @@
   {source: "app/models/asyncWrappers.js"},
   {source: "app/models/credentials.js"},
   {source: "app/models/instapaper.js"},
-  {source: "app/models/simple-reader.js"},
+  {source: "app/models/spare-time.js"},
 
   {source: "app/lib/ajax.js"},
 
