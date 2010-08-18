@@ -19,12 +19,32 @@ var Instapaper = Class.create({
   getAllUnread: function(success, failure) {
     new Ajax.Request("http://www.instapaper.com/u", {
       method: "get",
-      onSuccess: this.parseUnreadItems.bind(this, success),
+      onSuccess: this.parseItems.bind(this, success),
       onFailure: failure
     })
   },
 
-  parseUnreadItems: function(success, response) {
+  getArchived: function(success, failure) {
+    new Ajax.Request("http://www.instapaper.com/archive", {
+      method: "get",
+      onSuccess: this.parseItems.bind(this, success),
+      onFailure: failure
+    })
+  },
+
+  getStarred: function(success, failure) {
+    new Ajax.Request("http://www.instapaper.com/starred", {
+      method: "get",
+      onSuccess: this.parseItems.bind(this, success),
+      onFailure: failure
+    })
+  },
+  
+  absoluteUrl: function(a) {
+    return a ? a.href.replace(/file:\/\//, 'http://www.instapaper.com') : null
+  },
+
+  parseItems: function(success, response) {
     var items = []
     var div = document.createElement("div")
     div.innerHTML = response.responseText.replace(/<img/g, '')
@@ -43,19 +63,28 @@ var Instapaper = Class.create({
       item.textUrl = "http://www.instapaper.com/m?u=" + escape(item.url)
 
       var deleteUrl = rawItem.down("a.deleteLink")
-      item.deleteUrl = deleteUrl ? deleteUrl.href.replace(/file:\/\//, 'http://www.instapaper.com') : null
+      item.deleteUrl = this.absoluteUrl(deleteUrl)
 
       var archiveUrl = rawItem.down("a.archiveButton")
-      item.archiveUrl = archiveUrl ? archiveUrl.href.replace(/file:\/\//, 'http://www.instapaper.com') : null
 
+      if(archiveUrl && archiveUrl.innerHTML == "Delete") {
+        item.deleteUrl = this.absoluteUrl(archiveUrl)
+      }
+      else if(archiveUrl) {
+        item.archiveUrl = this.absoluteUrl(archiveUrl)
+      }
+
+      var restoreUrl = rawItem.down("a.restoreButton")
+      item.restoreUrl = this.absoluteUrl(restoreUrl)
+      
       var starUrl = rawItem.down("a.starToggleUnstarred")
-      item.starUrl = starUrl && starUrl.style.display != 'none' ? starUrl.href.replace(/file:\/\//, 'http://www.instapaper.com') : null
+      item.starUrl = starUrl && starUrl.style.display != 'none' ? this.absoluteUrl(starUrl) : null
 
       var unstarUrl = rawItem.down("a.starToggleStarred")
-      item.unstarUrl = unstarUrl && unstarUrl.style.display != 'none' ? unstarUrl.href.replace(/file:\/\//, 'http://www.instapaper.com') : null
+      item.unstarUrl = unstarUrl && unstarUrl.style.display != 'none' ? this.absoluteUrl(unstarUrl) : null
 
       items.push(item)
-    })
+    }.bind(this))
 
     success(items)
   }

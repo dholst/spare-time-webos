@@ -25,9 +25,10 @@ var TextAssistant = Class.create(BaseAssistant, {
       items = []
 
       this.addCommand(items, this.item.archiveUrl, 'Archive')
+      this.addCommand(items, this.item.restoreUrl, 'Restore')
       this.addCommand(items, this.item.starUrl, 'Star')
       this.addCommand(items, this.item.unstarUrl, 'Unstar')
-      this.addCommand(items, this.item.deleteUrl, 'Delete')
+      // this.addCommand(items, this.item.deleteUrl, 'Delete')
 
       this.controller.popupSubmenu({
         placeNear: event.originalEvent.target,
@@ -46,6 +47,14 @@ var TextAssistant = Class.create(BaseAssistant, {
   handlePopupChoice: function(choice) {
     var url
     var success
+
+    if(choice == 'Restore') {
+      url = this.item.restoreUrl
+
+      success = function() {
+        this.controller.stageController.popScene(true)
+      }.bind(this)
+    }
 
     if(choice == 'Archive') {
       url = this.item.archiveUrl
