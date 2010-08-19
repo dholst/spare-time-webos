@@ -74,3 +74,20 @@
     background: url(../images/refresh.png) no-repeat center;
 }
 
+.palm-row .star {
+  background: url(../images/notstarred.png) center center no-repeat;
+}
+
+.palm-row .star.on {
+  background: url(../images/starred.png) center center no-repeat;
+}
+
+table, tr, td, th {
+  padding: 0;
+  margin: 0;
+}
+
+table .palm-info-text, table .palm-body-text {
+  padding: 0;
+  margin: 7px;
+}

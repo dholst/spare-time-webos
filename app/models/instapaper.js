@@ -77,11 +77,10 @@ var Instapaper = Class.create({
       var restoreUrl = rawItem.down("a.restoreButton")
       item.restoreUrl = this.absoluteUrl(restoreUrl)
       
-      var starUrl = rawItem.down("a.starToggleUnstarred")
-      item.starUrl = starUrl && starUrl.style.display != 'none' ? this.absoluteUrl(starUrl) : null
+      var starUrl = rawItem.down("a.starToggleStarred")
+      item.starUrl = this.absoluteUrl(starUrl)
 
-      var unstarUrl = rawItem.down("a.starToggleStarred")
-      item.unstarUrl = unstarUrl && unstarUrl.style.display != 'none' ? this.absoluteUrl(unstarUrl) : null
+      item.starred = starUrl.style.display != 'none' ? 'on' : ''
 
       items.push(item)
     }.bind(this))

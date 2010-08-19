@@ -2,11 +2,18 @@ var TextAssistant = Class.create(BaseAssistant, {
   initialize: function($super, item) {
     $super()
     this.item = item
+    this.options = []
+    this.addCommand(this.options, this.item.archiveUrl, 'Archive')
+    this.addCommand(this.options, this.item.restoreUrl, 'Restore')
   },
 
   setup: function($super) {
     $super()
-    this.controller.setupWidget(Mojo.Menu.commandMenu, {}, {items: [{label: "...", command: "choices"}]});
+
+    if(this.options.length) {
+      this.controller.setupWidget(Mojo.Menu.commandMenu, {}, {items: [{label: "...", command: "choices"}]});
+    }
+
     this.controller.setupWidget("web-view", {url: this.item.textUrl}, {})
     this.controller.listen("web-view", Mojo.Event.webViewLoadStarted, this.loadStarted = this.loadStarted.bind(this))
     this.controller.listen("web-view", Mojo.Event.webViewLoadStopped, this.loadComplete = this.loadComplete.bind(this))
@@ -22,17 +29,9 @@ var TextAssistant = Class.create(BaseAssistant, {
 
   handleCommand: function(event) {
     if(event.type == Mojo.Event.command && event.command == 'choices') {
-      items = []
-
-      this.addCommand(items, this.item.archiveUrl, 'Archive')
-      this.addCommand(items, this.item.restoreUrl, 'Restore')
-      this.addCommand(items, this.item.starUrl, 'Star')
-      this.addCommand(items, this.item.unstarUrl, 'Unstar')
-      // this.addCommand(items, this.item.deleteUrl, 'Delete')
-
       this.controller.popupSubmenu({
         placeNear: event.originalEvent.target,
-        items: items,
+        items: this.options,
         onChoose: this.handlePopupChoice.bind(this)
       })
     }
@@ -69,24 +68,6 @@ var TextAssistant = Class.create(BaseAssistant, {
 
       success = function() {
         this.controller.stageController.popScene(true)
-      }.bind(this)
-    }
-
-    if(choice == 'Star') {
-      url = this.item.starUrl
-
-      success = function() {
-        this.item.unstarUrl = this.item.starUrl
-        this.item.starUrl = null
-      }.bind(this)
-    }
-
-    if(choice == 'Unstar') {
-      url = this.item.unstarUrl
-
-      success = function() {
-        this.item.starUrl = this.item.unstarUrl
-        this.item.unstarUrl = null
       }.bind(this)
     }
 
