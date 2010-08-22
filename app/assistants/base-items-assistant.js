@@ -3,7 +3,6 @@ var BaseItemsAssistant = Class.create(BaseAssistant, {
     $super()
     this.instapaper = new Instapaper()
     this.items = {items: []}
-    this.firstTime = true
   },
 
   setup: function($super) {
@@ -18,9 +17,20 @@ var BaseItemsAssistant = Class.create(BaseAssistant, {
     this.controller.stopListening("items", Mojo.Event.listTap, this.itemTapped)
   },
 
-  activate: function($super, refresh) {
+  ready: function($super) {
     $super()
-    if(refresh || this.firstTime) this.refresh()
+    this.refresh()
+  },
+
+  activate: function($super, itemToRemove) {
+    if(itemToRemove) {
+      for(var i = 0; i < this.items.items.length; i++) {
+        if(this.items.items[i] == itemToRemove) {
+          this.items.items.splice(i, 1)
+          this.controller.modelChanged(this.items)
+        }
+      }
+    }
   },
 
   itemsRetrieved: function(items) {
