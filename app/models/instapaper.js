@@ -39,7 +39,7 @@ var Instapaper = Class.create({
       onFailure: failure
     })
   },
-  
+
   absoluteUrl: function(a) {
     return a ? a.href.replace(/file:\/\//, 'http://www.instapaper.com') : null
   },
@@ -53,36 +53,42 @@ var Instapaper = Class.create({
       var item = {}
 
       var title = rawItem.down("a.tableViewCellTitleLink")
-      item.title = title ? title.innerHTML.unescapeHTML().replace(/&nbsp;/g, ' ') : ""
-      item.url = title ? title.href : null
 
-      var host = rawItem.down("span.host")
-      item.host = host ? host.innerHTML.strip() : ""
+      if(title) {
+        item.title = title ? title.innerHTML.unescapeHTML().replace(/&nbsp;/g, ' ') : ""
+        item.url = title ? title.href : null
 
-      var textUrl = rawItem.down("a.textButton")
-      item.textUrl = "http://www.instapaper.com/m?u=" + escape(item.url)
+        var host = rawItem.down("span.host")
+        item.host = host ? host.innerHTML.strip() : ""
 
-      var deleteUrl = rawItem.down("a.deleteLink")
-      item.deleteUrl = this.absoluteUrl(deleteUrl)
+        var textUrl = rawItem.down("a.textButton")
+        item.textUrl = "http://www.instapaper.com/m?u=" + escape(item.url)
 
-      var archiveUrl = rawItem.down("a.archiveButton")
+        var deleteUrl = rawItem.down("a.deleteLink")
+        item.deleteUrl = this.absoluteUrl(deleteUrl)
 
-      if(archiveUrl && archiveUrl.innerHTML == "Delete") {
-        item.deleteUrl = this.absoluteUrl(archiveUrl)
+        var archiveUrl = rawItem.down("a.archiveButton")
+
+        if(archiveUrl && archiveUrl.innerHTML == "Delete") {
+          item.deleteUrl = this.absoluteUrl(archiveUrl)
+        }
+        else if(archiveUrl) {
+          item.archiveUrl = this.absoluteUrl(archiveUrl)
+        }
+
+        var restoreUrl = rawItem.down("a.restoreButton")
+        item.restoreUrl = this.absoluteUrl(restoreUrl)
+
+        var starUrl = rawItem.down("a.starToggleStarred")
+        item.starUrl = this.absoluteUrl(starUrl)
+
+        if(starUrl) {
+          item.starred = starUrl.style.display != 'none' ? 'on' : ''
+        }
+
+        items.push(item)
+
       }
-      else if(archiveUrl) {
-        item.archiveUrl = this.absoluteUrl(archiveUrl)
-      }
-
-      var restoreUrl = rawItem.down("a.restoreButton")
-      item.restoreUrl = this.absoluteUrl(restoreUrl)
-      
-      var starUrl = rawItem.down("a.starToggleStarred")
-      item.starUrl = this.absoluteUrl(starUrl)
-
-      item.starred = starUrl.style.display != 'none' ? 'on' : ''
-
-      items.push(item)
     }.bind(this))
 
     success(items)

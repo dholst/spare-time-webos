@@ -55,12 +55,15 @@ var BaseItemsAssistant = Class.create(BaseAssistant, {
     }
   },
 
-  handleCommand: function(event) {
+  handleCommand: function($super, event) {
     if("refresh" == event.command) {
       this.refresh()
     }
     else if("switch" == event.command) {
       this.switchScene(event)
+    }
+    else {
+      $super(event)
     }
   },
 

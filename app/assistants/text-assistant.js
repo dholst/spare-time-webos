@@ -7,6 +7,8 @@ var TextAssistant = Class.create(BaseAssistant, {
   setup: function($super) {
     $super()
 
+    this.controller.stageController.setWindowOrientation("free")
+
     var command
 
     if(this.item.archiveUrl) {
@@ -25,6 +27,11 @@ var TextAssistant = Class.create(BaseAssistant, {
     this.controller.listen("web-view", Mojo.Event.webViewLoadStopped, this.loadComplete = this.loadComplete.bind(this))
   },
 
+  cleanup: function($super) {
+    $super()
+    this.controller.stageController.setWindowOrientation("up")
+  },
+
   loadStarted: function() {
     this.spinnerOn("loading...")
   },
@@ -33,15 +40,15 @@ var TextAssistant = Class.create(BaseAssistant, {
     this.spinnerOff()
   },
 
-  handleCommand: function(event) {
-    if(event.type == Mojo.Event.command) {
-      if(event.command == 'archive') {
-        this.archive(this.item)
-      }
-
-      if(event.command == 'restore') {
-        this.restore(this.item)
-      }
+  handleCommand: function($super, event) {
+    if(event.command == 'archive') {
+      this.archive(this.item)
+    }
+    else if(event.command == 'restore') {
+      this.restore(this.item)
+    }
+    else {
+      $super(event)
     }
   },
 
