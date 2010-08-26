@@ -17,6 +17,28 @@
     background: url(../images/gradient.png) repeat-x;
 }
 
+.palm-page-header .my-right-icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 50px;
+    height: 50px;
+    z-index: 19301;
+}
+
+.palm-page-header .my-left-icon {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 50px;
+    height: 50px;
+    z-index: 19301;
+}
+
+.palm-page-header #switch {
+    background: url(../images/list.png) no-repeat center;
+}
+
 /*
  * SCENE SCROLLER
  */
@@ -72,6 +94,14 @@
 
 .palm-page-header #refresh {
     background: url(../images/refresh.png) no-repeat center;
+}
+
+.palm-row .saving {
+  background: url(../images/spinner.gif) center center no-repeat;
+}
+
+.palm-row .saved {
+  background: url(../images/saved.png) center center no-repeat;
 }
 
 .palm-row .star {

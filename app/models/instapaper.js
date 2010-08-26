@@ -55,6 +55,7 @@ var Instapaper = Class.create({
       var title = rawItem.down("a.tableViewCellTitleLink")
 
       if(title) {
+        item.id = rawItem.id.match(/\d+/)[0]
         item.title = title ? title.innerHTML.unescapeHTML().replace(/&nbsp;/g, ' ') : ""
         item.url = title ? title.href : null
 

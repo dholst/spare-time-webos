@@ -7,14 +7,16 @@ var BaseItemsAssistant = Class.create(BaseAssistant, {
 
   setup: function($super) {
     $super()
-    this.controller.setupWidget("items", {itemTemplate: 'items/item'}, this.items)
-    this.controller.setupWidget(Mojo.Menu.commandMenu, {}, {items: [{label: "...", command: "switch"}, {}, {label: "Refresh", icon: "refresh", command: "refresh"}]})
+    this.controller.setupWidget("items", {itemTemplate: 'items/item', onItemRendered: this.itemRendered.bind(this)}, this.items)
+    this.controller.setupWidget(Mojo.Menu.commandMenu, {}, {items: [this.getLeftSideCommand(), {}, {label: "Refresh", icon: "refresh", command: "refresh"}]})
     this.controller.listen("items", Mojo.Event.listTap, this.itemTapped = this.itemTapped.bind(this))
+    this.controller.listen("switch", Mojo.Event.tap, this.swapScene = this.swapScene.bind(this))
   },
 
   cleanup: function($super) {
     $super()
     this.controller.stopListening("items", Mojo.Event.listTap, this.itemTapped)
+    this.controller.stopListening("switch", Mojo.Event.tap, this.swapScene)
   },
 
   ready: function($super) {
@@ -59,24 +61,21 @@ var BaseItemsAssistant = Class.create(BaseAssistant, {
     if("refresh" == event.command) {
       this.refresh()
     }
-    else if("switch" == event.command) {
-      this.switchScene(event)
-    }
     else {
       $super(event)
     }
   },
 
-  switchScene: function(event) {
-    sceneSelections = []
+  swapScene: function() {
+    items = []
 
     this.otherScenes.each(function(scene) {
-      sceneSelections.push({label: scene.capitalize(), command: scene})
+      items.push({label: scene.capitalize(), command: scene})
     })
 
     this.controller.popupSubmenu({
-      placeNear: event.originalEvent.target,
-      items: sceneSelections,
+      placeNear: $("switch"),
+      items: items,
 
       onChoose: function(command) {
         if(command) {
@@ -90,5 +89,12 @@ var BaseItemsAssistant = Class.create(BaseAssistant, {
     this.firstTime = false
     this.spinnerOn("retrieving articles...")
     this.retrieveItems(this.itemsRetrieved.bind(this), this.retrieveFailure.bind(this))
+  },
+  
+  getLeftSideCommand: function() {
+    return {}
+  },
+  
+  itemRendered: function() {
   }
 })

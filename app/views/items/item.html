@@ -1,11 +1,11 @@
-<div class="palm-row">
+<div class="palm-row" id="item#{id}">
   <div class="palm-row-wrapper unread-item">
-    <table cellpadding="0" cellspacing="0">
+    <table cellpadding="0" cellspacing="0" style="width: 320px">
       <tr>
-        <td>
+        <td width="40px" align="center">
           <div class="icon star #{starred}"></div>
         </td>
-        <td>
+        <td align="left">
           <table cellpadding="0" cellspacing="0">
             <tr>
               <td><div class="palm-body-text"><strong>#{title}</strong></div></td>
@@ -14,6 +14,10 @@
               <td><div class="palm-info-text">#{host}</div></td>
             </tr>
           </table>
+        </td>
+        <td align="right">
+          <div style="display: none;" class="icon saving"></div>
+          <div style="display: none;" class="icon saved"></div>
         </td>
     </table>
   </div>
