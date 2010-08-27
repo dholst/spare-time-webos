@@ -1,17 +1,19 @@
 var BaseAssistant = Class.create({
+  initialize: function() {
+    this.appMenuItems = [
+      Mojo.Menu.editItem,
+      {label: "Logout", command: "logout"},
+      {label: "Help", command: Mojo.Menu.helpCmd}
+    ]
+  },
+
   setup: function() {
     this.controller.setupWidget("spinner", {spinnerSize: Mojo.Widget.spinnerLarge}, {})
+
     this.controller.setupWidget(
-      Mojo.Menu.appMenu, 
-      {omitDefaultItems: true}, 
-      {
-        visible: true, 
-        items: [
-          Mojo.Menu.editItem, 
-          {label: "Logout", command: "logout"},
-          {label: "Help", command: Mojo.Menu.helpCmd}
-        ]
-      }
+      Mojo.Menu.appMenu,
+      {omitDefaultItems: true},
+      {visible: true, items: this.appMenuItems}
     )
   },
 
@@ -51,7 +53,7 @@ var BaseAssistant = Class.create({
       this.controller.get("spinner-scrim").hide()
     }
   },
-  
+
   handleCommand: function(event) {
     if(Mojo.Event.command === event.type) {
       if(Mojo.Menu.helpCmd == event.command) {

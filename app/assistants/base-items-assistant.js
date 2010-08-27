@@ -8,7 +8,7 @@ var BaseItemsAssistant = Class.create(BaseAssistant, {
   setup: function($super) {
     $super()
     this.controller.setupWidget("items", {itemTemplate: 'items/item', onItemRendered: this.itemRendered.bind(this)}, this.items)
-    this.controller.setupWidget(Mojo.Menu.commandMenu, {}, {items: [this.getLeftSideCommand(), {}, {label: "Refresh", icon: "refresh", command: "refresh"}]})
+    this.controller.setupWidget(Mojo.Menu.commandMenu, {}, {items: [{}, {}, {label: "Refresh", icon: "refresh", command: "refresh"}]})
     this.controller.listen("items", Mojo.Event.listTap, this.itemTapped = this.itemTapped.bind(this))
     this.controller.listen("switch", Mojo.Event.tap, this.swapScene = this.swapScene.bind(this))
   },
@@ -89,10 +89,6 @@ var BaseItemsAssistant = Class.create(BaseAssistant, {
     this.firstTime = false
     this.spinnerOn("retrieving articles...")
     this.retrieveItems(this.itemsRetrieved.bind(this), this.retrieveFailure.bind(this))
-  },
-  
-  getLeftSideCommand: function() {
-    return {}
   },
   
   itemRendered: function() {

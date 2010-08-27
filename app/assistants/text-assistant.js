@@ -22,7 +22,8 @@ var TextAssistant = Class.create(BaseAssistant, {
       this.controller.setupWidget(Mojo.Menu.commandMenu, {}, {items: [command]});
     }
 
-    this.controller.setupWidget("web-view", {url: this.item.textUrl}, {})
+    var url = "file:///media/internal/files/.sparetime/.cache/" + this.item.id + "/index.html"
+    this.controller.setupWidget("web-view", {url: url}, {})
     this.controller.listen("web-view", Mojo.Event.webViewLoadStarted, this.loadStarted = this.loadStarted.bind(this))
     this.controller.listen("web-view", Mojo.Event.webViewLoadStopped, this.loadComplete = this.loadComplete.bind(this))
   },

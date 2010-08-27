@@ -7,6 +7,8 @@
 
   {source: "app/lib/ajax.js"},
   {source: "app/lib/article-saver.js"},
+  {source: "app/lib/download-manager.js"},
+  {source: "app/lib/data-store.js"},
 
   {source: "app/assistants/stage-assistant.js"},
   {source: "app/assistants/base-assistant.js"},

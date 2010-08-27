@@ -1,12 +1,31 @@
 var articleSaver = {
-  foo: false,
+  isSaved: function(id, yes, no) {
+    no = no || function() {}
 
-  isSaved: function(id) {
-    this.foo = !this.foo
-    return this.foo
+    DataStore.get(
+      "article" + id,
+
+      function(article) {
+        if(article) {
+          yes()
+        }
+        else {
+          no()
+        }
+      }
+    )
   },
 
   save: function(id, url, success, failure) {
-    success.delay(2, id)
+    DownloadManager.download(
+      url, 
+      id, 
+      
+      function() {
+        DataStore.add("article" + id, {}, success.curry(id))
+      },
+
+      failure.curry(id)
+    )
   }
 }
