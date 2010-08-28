@@ -1,4 +1,4 @@
-var articleSaver = {
+var ArticleSaver = {
   isSaved: function(id, yes, no) {
     no = no || function() {}
 
@@ -17,15 +17,6 @@ var articleSaver = {
   },
 
   save: function(id, url, success, failure) {
-    DownloadManager.download(
-      url, 
-      id, 
-      
-      function() {
-        DataStore.add("article" + id, {}, success.curry(id))
-      },
-
-      failure.curry(id)
-    )
+    DownloadManager.download(url, id, success, failure)
   }
 }

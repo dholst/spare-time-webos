@@ -121,3 +121,10 @@ table .palm-info-text, table .palm-body-text {
   padding: 0;
   margin: 7px;
 }
+
+#loading {
+  position: fixed;
+  z-index: 99999;
+  top: 5px;
+  right: 5px;
+}

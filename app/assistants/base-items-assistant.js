@@ -11,12 +11,18 @@ var BaseItemsAssistant = Class.create(BaseAssistant, {
     this.controller.setupWidget(Mojo.Menu.commandMenu, {}, {items: [{}, {}, {label: "Refresh", icon: "refresh", command: "refresh"}]})
     this.controller.listen("items", Mojo.Event.listTap, this.itemTapped = this.itemTapped.bind(this))
     this.controller.listen("switch", Mojo.Event.tap, this.swapScene = this.swapScene.bind(this))
+    this.controller.listen(document, SpareTime.Event.articleSaveStarting, this.itemSaveStarted = this.itemSaveStarted.bind(this))
+    this.controller.listen(document, SpareTime.Event.articleSaveComplete, this.itemSaveComplete = this.itemSaveComplete.bind(this))
+    this.controller.listen(document, SpareTime.Event.articleSaveFailed, this.itemSaveFailure = this.itemSaveFailure.bind(this))
   },
 
   cleanup: function($super) {
     $super()
     this.controller.stopListening("items", Mojo.Event.listTap, this.itemTapped)
     this.controller.stopListening("switch", Mojo.Event.tap, this.swapScene)
+    this.controller.stopListening(document, SpareTime.Event.articleSaveStarting, this.itemSaveStarted)
+    this.controller.stopListening(document, SpareTime.Event.articleSaveComplete, this.itemSaveComplete)
+    this.controller.stopListening(document, SpareTime.Event.articleSaveFailed, this.itemSaveFailure)
   },
 
   ready: function($super) {
@@ -91,6 +97,20 @@ var BaseItemsAssistant = Class.create(BaseAssistant, {
     this.retrieveItems(this.itemsRetrieved.bind(this), this.retrieveFailure.bind(this))
   },
   
-  itemRendered: function() {
+  itemRendered: function(listWidget, item, node) {
+    ArticleSaver.isSaved(item.id, function() {node.down(".saved").show()})
+  },
+  
+  itemSaveStarted: function() {
+    this.controller.sceneElement.querySelector("#item" + event.model.id + " .saving").show()
+  },
+  
+  itemSaveComplete: function() {
+    this.controller.sceneElement.querySelector("#item" + event.model.id + " .saving").hide()
+    this.controller.sceneElement.querySelector("#item" + event.model.id + " .saved").show()
+  },
+  
+  itemSaveFailure: function() {
+    this.controller.sceneElement.querySelector("#item" + event.model.id + " .saving").hide()
   }
 })

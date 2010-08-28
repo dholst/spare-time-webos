@@ -41,6 +41,7 @@ var DataStore = {
   },
 
   add: function(name, value, callback) {
+    callback = callback || function() {}
     console.log("adding " + name + " to the datastore")
 
     var onSuccess = function() {

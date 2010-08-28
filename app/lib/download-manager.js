@@ -19,6 +19,10 @@ var DownloadManager = {
     })
   },
 
+  deleteDownload: function(ticket) {
+    new Mojo.Service.Request(DownloadManager.requestUrl, {method: "deleteDownloadedFile", parameters: {ticket: ticket}})
+  },
+
   onDownloadSuccess: function(requestId, onComplete, onFailure, response) {
     Mojo.Log.info("download success:", Object.toJSON(response))
 
@@ -29,7 +33,7 @@ var DownloadManager = {
         onFailure()
       }
       else {
-        onComplete(response.target)
+        onComplete(response.ticket)
       }
     }
   },
