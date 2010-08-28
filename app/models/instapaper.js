@@ -1,9 +1,11 @@
 var Instapaper = Class.create({
-  login: function(credentials, success, failure) {
+  login: function(credentials, success, failure, offline) {
     new Ajax.Request("http://www.instapaper.com/user/login", {
       method: "post",
+      timeout: 5000,
       parameters: {username: credentials.username, password: credentials.password},
-      onComplete: this.loginComplete.bind(this, success, failure)
+      onFailure: offline,
+      onSuccess: this.loginComplete.bind(this, success, failure)
     })
   },
 

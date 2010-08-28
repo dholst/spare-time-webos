@@ -58,7 +58,7 @@ var BaseItemsAssistant = Class.create(BaseAssistant, {
       event.originalEvent.target.toggleClassName('on')
       new Ajax.Request(event.item.starUrl, {method: 'get'})
     }
-    else if(event.item.url) {
+    else if(event.item.textUrl) {
       this.controller.stageController.pushScene("text", event.item)
     }
   },

@@ -105,11 +105,15 @@
 }
 
 .palm-row .star {
+  width: 40px;
   background: url(../images/notstarred.png) center center no-repeat;
 }
 
 .palm-row .star.on {
   background: url(../images/starred.png) center center no-repeat;
+}
+
+.palm-row .star.offline {
 }
 
 table, tr, td, th {

@@ -9,7 +9,12 @@ var LoginAssistant = Class.create(BaseAssistant, {
 
     if(this.credentials.username) {
       this.spinnerOn("logging in...")
-      this.instapaper.login(this.credentials, this.loginSuccess.bind(this), this.loginFailure.bind(this))
+      this.instapaper.login(
+        this.credentials,
+        this.loginSuccess.bind(this),
+        this.loginFailure.bind(this),
+        this.offline.bind(this)
+      )
     }
     else {
       this.controller.stageController.swapScene("credentials", this.credentials)
@@ -19,6 +24,10 @@ var LoginAssistant = Class.create(BaseAssistant, {
   loginSuccess: function() {
     this.credentials.save()
     this.controller.stageController.swapScene("unread")
+  },
+
+  offline: function() {
+    this.controller.stageController.pushScene("offline")
   },
 
   loginFailure: function() {
