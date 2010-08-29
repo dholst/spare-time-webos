@@ -1,4 +1,9 @@
 var OfflineAssistant = Class.create(BaseItemsAssistant, {
+  initialize: function($super) {
+    $super()
+    this.allowItemDelete = false
+  },
+  
   retrieveItems: function(success, failure) {
     this.savedItems = []
     

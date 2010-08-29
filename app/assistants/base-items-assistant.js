@@ -3,13 +3,15 @@ var BaseItemsAssistant = Class.create(BaseAssistant, {
     $super()
     this.instapaper = new Instapaper()
     this.items = {items: []}
+    this.allowItemDelete = true
   },
 
   setup: function($super) {
     $super()
-    this.controller.setupWidget("items", {itemTemplate: 'items/item', onItemRendered: this.itemRendered.bind(this)}, this.items)
+    this.controller.setupWidget("items", {itemTemplate: 'items/item', onItemRendered: this.itemRendered.bind(this), swipeToDelete: this.allowItemDelete}, this.items)
     this.controller.setupWidget(Mojo.Menu.commandMenu, {}, {items: [{}, {}, {label: "Refresh", icon: "refresh", command: "refresh"}]})
     this.controller.listen("items", Mojo.Event.listTap, this.itemTapped = this.itemTapped.bind(this))
+    this.controller.listen("items", Mojo.Event.listDelete, this.itemDeleted = this.itemDeleted.bind(this))
     this.controller.listen("switch", Mojo.Event.tap, this.swapScene = this.swapScene.bind(this))
     this.controller.listen(document, SpareTime.Event.articleSaveStarting, this.itemSaveStarted = this.itemSaveStarted.bind(this))
     this.controller.listen(document, SpareTime.Event.articleSaveComplete, this.itemSaveComplete = this.itemSaveComplete.bind(this))
@@ -60,6 +62,12 @@ var BaseItemsAssistant = Class.create(BaseAssistant, {
     }
     else if(event.item.textUrl) {
       this.controller.stageController.pushScene("text", event.item)
+    }
+  },
+  
+  itemDeleted: function(event) {
+    if(event.item.deleteUrl) {
+      new Ajax.Request(event.item.deleteUrl, {method: "post"})
     }
   },
 

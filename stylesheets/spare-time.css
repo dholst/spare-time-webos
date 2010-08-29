@@ -96,12 +96,16 @@
     background: url(../images/refresh.png) no-repeat center;
 }
 
+.palm-menu-spacer {
+  height: 50px;
+}
+
 .palm-row .saving {
   background: url(../images/spinner.gif) center center no-repeat;
 }
 
 .palm-row .saved {
-  background: url(../images/saved2.png) center center no-repeat;
+  background: url(../images/saved.png) center center no-repeat;
 }
 
 .palm-row .star {

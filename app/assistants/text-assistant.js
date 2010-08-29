@@ -9,6 +9,7 @@ var TextAssistant = Class.create(BaseAssistant, {
   setup: function($super) {
     $super()
 
+    this.controller.update("header", this.item.title)
     this.controller.stageController.setWindowOrientation("free")
     this.controller.setupWidget("loading", {spinnerSize: "small"}, this.spinner)
     this.controller.setupWidget("web-view", {url: ""}, {})

@@ -11,10 +11,33 @@ var UnreadAssistant = Class.create(BaseItemsAssistant, {
 
   handleCommand: function($super, event) {
     if("sync" === event.command) {
-      Syncer.sync(this.items.items)
+      this.sync()
     }
     else {
       $super(event)
+    }
+  },
+  
+  sync: function() {
+    var itemsToSync = this.items.items
+    var syncEm = function() {Syncer.sync(itemsToSync)}
+    
+    if(new Mojo.Model.Cookie("syncAcknowledged").get()) {    
+      syncEm()
+    }
+    else {
+      this.controller.showAlertDialog({
+        title: "Experimental",
+        message: "Syncing articles for offline use is currently an experimental feature. If you run into any problems or have suggestions for improvements please let me know at sparetime@semicolonapps.com",
+        choices:[{label: "OK", value:"ok", type:'affirmative'}],
+        
+        onChoose: function(value) {
+          if(value == "ok") {
+            new Mojo.Model.Cookie("syncAcknowledged").put(true)
+            syncEm()
+          }
+        }
+      })
     }
   }
 })
