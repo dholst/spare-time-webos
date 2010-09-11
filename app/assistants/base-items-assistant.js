@@ -4,12 +4,13 @@ var BaseItemsAssistant = Class.create(BaseAssistant, {
     this.instapaper = new Instapaper()
     this.items = {items: []}
     this.allowItemDelete = true
+    this.commandMenuItems = [{}, {}, {label: "Refresh", icon: "refresh", command: "refresh"}]
   },
 
   setup: function($super) {
     $super()
     this.controller.setupWidget("items", {itemTemplate: 'items/item', onItemRendered: this.itemRendered.bind(this), swipeToDelete: this.allowItemDelete}, this.items)
-    this.controller.setupWidget(Mojo.Menu.commandMenu, {}, {items: [{}, {}, {label: "Refresh", icon: "refresh", command: "refresh"}]})
+    this.controller.setupWidget(Mojo.Menu.commandMenu, {}, {items: this.commandMenuItems})
     this.controller.listen("items", Mojo.Event.listTap, this.itemTapped = this.itemTapped.bind(this))
     this.controller.listen("items", Mojo.Event.listDelete, this.itemDeleted = this.itemDeleted.bind(this))
     this.controller.listen("switch", Mojo.Event.tap, this.swapScene = this.swapScene.bind(this))
@@ -33,6 +34,8 @@ var BaseItemsAssistant = Class.create(BaseAssistant, {
   },
 
   activate: function($super, itemToRemove) {
+    $super()
+    
     if(itemToRemove) {
       for(var i = 0; i < this.items.items.length; i++) {
         if(this.items.items[i] == itemToRemove) {
@@ -64,7 +67,7 @@ var BaseItemsAssistant = Class.create(BaseAssistant, {
       this.controller.stageController.pushScene("text", event.item)
     }
   },
-  
+
   itemDeleted: function(event) {
     if(event.item.deleteUrl) {
       new Ajax.Request(event.item.deleteUrl, {method: "post"})
@@ -104,20 +107,20 @@ var BaseItemsAssistant = Class.create(BaseAssistant, {
     this.spinnerOn("retrieving articles...")
     this.retrieveItems(this.itemsRetrieved.bind(this), this.retrieveFailure.bind(this))
   },
-  
+
   itemRendered: function(listWidget, item, node) {
     ArticleSaver.isSaved(item.id, function() {node.down(".saved").show()})
   },
-  
+
   itemSaveStarted: function() {
     this.controller.sceneElement.querySelector("#item" + event.model.id + " .saving").show()
   },
-  
+
   itemSaveComplete: function() {
     this.controller.sceneElement.querySelector("#item" + event.model.id + " .saving").hide()
     this.controller.sceneElement.querySelector("#item" + event.model.id + " .saved").show()
   },
-  
+
   itemSaveFailure: function() {
     this.controller.sceneElement.querySelector("#item" + event.model.id + " .saving").hide()
   }

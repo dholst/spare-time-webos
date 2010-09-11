@@ -14,6 +14,7 @@
   {"source": "app/assistants/stage-assistant.js"},
   {"source": "app/assistants/base-assistant.js"},
   {"source": "app/assistants/base-items-assistant.js"},
+  {"source": "app/assistants/add-assistant.js"},
   {"source": "app/assistants/credentials-assistant.js"},
   {"source": "app/assistants/login-assistant.js"},
   {"source": "app/assistants/offline-assistant.js"},

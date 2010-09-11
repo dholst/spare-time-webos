@@ -1,5 +1,7 @@
 var Instapaper = Class.create({
   login: function(credentials, success, failure, offline) {
+    Instapaper.credentials = credentials
+    
     new Ajax.Request("http://www.instapaper.com/user/login", {
       method: "post",
       timeout: 5000,
@@ -16,6 +18,28 @@ var Instapaper = Class.create({
     else {
       success()
     }
+  },
+  
+  add: function(url, title, success, failure) {
+    var parameters = {
+      username: Instapaper.credentials.username,
+      password: Instapaper.credentials.password,
+      url: url
+    }
+    
+    if(title && title.strip().length) {
+      parameters.title = title
+    }
+    else {
+      parameters['auto-title'] = 1
+    }
+    
+    new Ajax.Request("http://www.instapaper.com/api/add", {
+      method: "post",
+      parameters: parameters,
+      onSuccess: success,
+      onFailur: failure
+    })
   },
 
   getAllUnread: function(success, failure) {

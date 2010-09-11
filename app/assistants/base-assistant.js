@@ -60,12 +60,15 @@ var BaseAssistant = Class.create({
         this.controller.stageController.pushScene("help")
         event.stop()
       }
-      if("logout" == event.command) {
+      else if("logout" == event.command) {
         var creds = new Credentials()
         creds.username = null
         creds.password = null
         creds.save()
         this.controller.stageController.swapScene("login")
+      }
+      else if("add" == event.command) {
+        this.controller.stageController.pushScene("add")
       }
     }
   }
