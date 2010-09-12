@@ -22,6 +22,7 @@
   {"source": "app/assistants/unread-assistant.js"},
   {"source": "app/assistants/archived-assistant.js"},
   {"source": "app/assistants/starred-assistant.js"},
+  {"source": "app/assistants/folder-assistant.js"},
   {"source": "app/assistants/text-assistant.js"},
   {"source": "app/assistants/bail-assistant.js"},
   {"source": "app/assistants/help-assistant.js"}

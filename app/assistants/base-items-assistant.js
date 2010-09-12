@@ -46,11 +46,17 @@ var BaseItemsAssistant = Class.create(BaseAssistant, {
     }
   },
 
-  itemsRetrieved: function(items) {
+  itemsRetrieved: function(items, folders) {
     this.items.items.clear()
     this.items.items.push.apply(this.items.items, items)
     this.controller.modelChanged(this.items)
     this.spinnerOff()
+    
+    if(folders) {
+      folders.each(function(folder) {
+        this.otherScenes.push(folder)
+      }.bind(this))
+    }
   },
 
   retrieveFailure: function() {
@@ -84,10 +90,11 @@ var BaseItemsAssistant = Class.create(BaseAssistant, {
   },
 
   swapScene: function() {
+    scenes = this.otherScenes
     items = []
 
-    this.otherScenes.each(function(scene) {
-      items.push({label: scene.capitalize(), command: scene})
+    scenes.each(function(scene) {
+      items.push({label: scene.name, command: scene.name})
     })
 
     this.controller.popupSubmenu({
@@ -95,9 +102,16 @@ var BaseItemsAssistant = Class.create(BaseAssistant, {
       items: items,
 
       onChoose: function(command) {
-        if(command) {
-          this.controller.stageController.swapScene(command)
-        }
+        scenes.each(function(scene) {
+          if(scene.name == command) {
+            if(scene.url) {
+              this.controller.stageController.swapScene("folder", scene.name, scene.url)
+            }
+            else {
+              this.controller.stageController.swapScene(command.toLowerCase())
+            }
+          }
+        }.bind(this))
       }.bind(this)
     })
   },
@@ -105,6 +119,7 @@ var BaseItemsAssistant = Class.create(BaseAssistant, {
   refresh: function() {
     this.firstTime = false
     this.spinnerOn("retrieving articles...")
+    this.setOtherScenes()
     this.retrieveItems(this.itemsRetrieved.bind(this), this.retrieveFailure.bind(this))
   },
 

@@ -1,7 +1,6 @@
 var StarredAssistant = Class.create(BaseItemsAssistant, {
-  initialize: function($super) {
-    $super()
-    this.otherScenes = ["unread", "archived"]
+  setOtherScenes: function() {
+    this.otherScenes = [{name: "Unread"}, {name: "Archived"}]
   },
 
   retrieveItems: function(success, failure) {

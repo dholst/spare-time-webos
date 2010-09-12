@@ -1,7 +1,7 @@
 var Instapaper = Class.create({
   login: function(credentials, success, failure, offline) {
     Instapaper.credentials = credentials
-    
+
     new Ajax.Request("http://www.instapaper.com/user/login", {
       method: "post",
       timeout: 5000,
@@ -19,21 +19,21 @@ var Instapaper = Class.create({
       success()
     }
   },
-  
+
   add: function(url, title, success, failure) {
     var parameters = {
       username: Instapaper.credentials.username,
       password: Instapaper.credentials.password,
       url: url
     }
-    
+
     if(title && title.strip().length) {
       parameters.title = title
     }
     else {
       parameters['auto-title'] = 1
     }
-    
+
     new Ajax.Request("http://www.instapaper.com/api/add", {
       method: "post",
       parameters: parameters,
@@ -66,11 +66,20 @@ var Instapaper = Class.create({
     })
   },
 
+  getFolder: function(url, success, failure) {
+    new Ajax.Request(url, {
+      method: "get",
+      onSuccess: this.parseItems.bind(this, success),
+      onFailure: failure
+    })
+  },
+
   absoluteUrl: function(a) {
     return a ? a.href.replace(/file:\/\//, 'http://www.instapaper.com') : null
   },
 
   parseItems: function(success, response) {
+    var folders = []
     var items = []
     var div = document.createElement("div")
     div.innerHTML = response.responseText.replace(/<img/g, '')
@@ -118,6 +127,14 @@ var Instapaper = Class.create({
       }
     }.bind(this))
 
-    success(items)
+    $(div).select("#folders a").each(function(folder) {
+      if(folder.href.include("/folder/")) {
+        console.log(folder.innerHTML)
+        console.log(folder.href)
+        folders.push({name: folder.innerHTML.strip(), url: this.absoluteUrl(folder)})
+      }
+    }.bind(this))
+
+    success(items, folders)
   }
 })

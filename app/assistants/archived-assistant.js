@@ -1,7 +1,6 @@
 var ArchivedAssistant = Class.create(BaseItemsAssistant, {
-  initialize: function($super) {
-    $super()
-    this.otherScenes = ["unread", "starred"]
+  setOtherScenes: function() {
+    this.otherScenes = [{name: "Unread"}, {name: "Starred"}]
   },
   
   retrieveItems: function(success, failure) {
