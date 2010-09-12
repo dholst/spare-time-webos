@@ -11,6 +11,7 @@
   {"source": "app/lib/download-manager.js"},
   {"source": "app/lib/data-store.js"},
 
+  {"source": "app/assistants/app-assistant.js"},
   {"source": "app/assistants/stage-assistant.js"},
   {"source": "app/assistants/base-assistant.js"},
   {"source": "app/assistants/base-items-assistant.js"},
