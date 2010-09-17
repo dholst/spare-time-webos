@@ -17,6 +17,12 @@ MenuData.ApplicationMenu = {
 		checkEnabled: true
 	},
 	
+	AddToSpareTime: {
+	  label: $L('Add to Spare Time'),
+	  command: 'add-to-spare-time-cmd',
+	  checkEnabled: true
+	},
+
 	AddToLauncher: {
 		label: $L('Add to Launcher'),
 		command: 'add-launch-icon-cmd',

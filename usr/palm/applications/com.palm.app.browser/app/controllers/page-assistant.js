@@ -788,6 +788,7 @@ PageAssistant.prototype._setupMenus = function() {
 			items: [
 				MenuData.ApplicationMenu.NewCard,
 				MenuData.ApplicationMenu.AddBookmark,
+				MenuData.ApplicationMenu.AddToSpareTime,
 				{
 					label: $L("Page"),
 					items: [
@@ -2112,6 +2113,39 @@ PageAssistant.prototype.handleCommand = function(event) {
 					this._createDefaultBookmarkImages(urlReference);
 					this.showBookmarkDialog(BookmarkDialogAssistant.createBookmarkTask, urlReference);
 					break;
+
+        case MenuData.ApplicationMenu.AddToSpareTime.command:
+          this.controller.serviceRequest("palm://com.palm.applicationManager", {
+            method: "open",
+
+            parameters: {
+              id: "com.semicolonapps.sparetime",
+              params: {action: "add_url", url: this.currentUrl, title: this.currentTitle}
+            },
+
+            onFailure: function() {
+              this.controller.showAlertDialog({
+                title: $L("Spare Time Not Installed"),
+                message: $L("Spare Time is not installed. Would you like to purchase it?"),
+
+                choices:[
+                  {label:$L("Yes"), value:"yes", type:"affirmative"},
+                  {label:$L("No"), value:"no", type:"dismissal"}
+                ],
+
+                onChoose: function(value){
+                  if("yes" == value){
+                    this.controller.serviceRequest("palm://com.palm.applicationManager", {
+                      method:"open",
+                      parameters:{target: "http://developer.palm.com/appredirect/?packageid=com.semicolonapps.sparetime"}
+                    });
+                  }
+                }
+              });
+            }.bind(this)
+          });
+
+          break;
 
 				case MenuData.ApplicationMenu.AddToLauncher.command:
 					// Bookmarks can deal with one that has no title, but not the launcher
