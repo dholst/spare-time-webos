@@ -35,7 +35,7 @@ var BaseItemsAssistant = Class.create(BaseAssistant, {
 
   activate: function($super, itemToRemove) {
     $super()
-    
+
     if(itemToRemove) {
       for(var i = 0; i < this.items.items.length; i++) {
         if(this.items.items[i] == itemToRemove) {
@@ -51,7 +51,7 @@ var BaseItemsAssistant = Class.create(BaseAssistant, {
     this.items.items.push.apply(this.items.items, items)
     this.controller.modelChanged(this.items)
     this.spinnerOff()
-    
+
     if(folders) {
       folders.each(function(folder) {
         this.otherScenes.push(folder)

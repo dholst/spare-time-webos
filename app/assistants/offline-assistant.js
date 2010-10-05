@@ -3,16 +3,20 @@ var OfflineAssistant = Class.create(BaseItemsAssistant, {
     $super()
     this.allowItemDelete = false
   },
-  
+
+  setOtherScenes: function() {
+    this.otherScenes = []
+  },
+
   retrieveItems: function(success, failure) {
     this.savedItems = []
-    
+
     DataStore.get("savedArticles", function(savedArticles) {
       this.savedArticleIds = savedArticles
       this.getNextOne(success, failure)
     }.bind(this), [])
   },
-  
+
   getNextOne: function(success, failure) {
     if(this.savedArticleIds.length == 0) {
       success(this.savedItems)
