@@ -129,8 +129,6 @@ var Instapaper = Class.create({
 
     $(div).select("#folders a").each(function(folder) {
       if(folder.href.include("/folder/")) {
-        console.log(folder.innerHTML)
-        console.log(folder.href)
         folders.push({name: folder.innerHTML.strip(), url: this.absoluteUrl(folder)})
       }
     }.bind(this))

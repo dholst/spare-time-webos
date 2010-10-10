@@ -21,6 +21,17 @@ var TextAssistant = Class.create(BaseAssistant, {
 
     this.controller.listen("header", Mojo.Event.tap, this.headerTapped = this.headerTapped.bind(this))
     this.controller.listen("header", Mojo.Event.hold, this.linkOptions = this.linkOptions.bind(this))
+    this.controller.listen(document, "keydown", this.keyDown = this.keyDown.bind(this))
+    this.controller.listen(document, "keyup", this.keyUp = this.keyUp.bind(this))
+  },
+
+  cleanup: function($super) {
+    $super()
+    this.controller.stageController.setWindowOrientation("up")
+    this.controller.stopListening("header", Mojo.Event.tap, this.headerTapped)
+    this.controller.stopListening("header", Mojo.Event.hold, this.linkOptions)
+    this.controller.stopListening(document, "keydown", this.keyDown)
+    this.controller.stopListening(document, "keyup", this.keyUp)
   },
 
   activate: function($super) {
@@ -56,13 +67,6 @@ var TextAssistant = Class.create(BaseAssistant, {
         this.spinnerOff()
       }.bind(this)
     })
-  },
-
-  cleanup: function($super) {
-    $super()
-    this.controller.stageController.setWindowOrientation("up")
-    this.controller.stopListening("header", Mojo.Event.tap, this.headerTapped)
-    this.controller.stopListening("header", Mojo.Event.hold, this.linkOptions)
   },
 
   linkOptions: function(event) {
@@ -168,9 +172,24 @@ var TextAssistant = Class.create(BaseAssistant, {
     })
   },
 
+  keyDown: function(event) {
+    if("Meta" == event.keyIdentifier) {
+      this.metaKey = true
+    }
+  },
+
+  keyUp: function(event) {
+    if("Meta" == event.keyIdentifier) {
+      this.metaKey = false
+    }
+  },
+
   headerTapped: function(event) {
     if(this.headerHeld) {
       this.headerHeld = false
+    }
+    else if(this.metaKey) {
+      this.linkOptions()
     }
     else if(this.item.url) {
       this.controller.serviceRequest("palm://com.palm.applicationManager", {
