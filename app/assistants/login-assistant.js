@@ -7,6 +7,8 @@ var LoginAssistant = Class.create(BaseAssistant, {
   activate: function($super) {
     $super()
 
+    SpareTime.Metrix.checkBulletinBoard(this.controller, 1);
+
     if(this.credentials.username) {
       this.spinnerOn("logging in...")
       this.instapaper.login(

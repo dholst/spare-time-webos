@@ -126,7 +126,7 @@ var TextAssistant = Class.create(BaseAssistant, {
   },
 
   moveToFolder: function(url) {
-    if(url.startsWith("http://")){
+    if(url && url.startsWith("http://")){
       this.callAndReturn(url)
     }
   },

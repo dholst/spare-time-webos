@@ -3,4 +3,5 @@ Rakefile
 spec
 patch
 usr
+screenshots
 
