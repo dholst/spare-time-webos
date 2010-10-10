@@ -10,7 +10,7 @@
   {"source": "app/lib/article-saver.js"},
   {"source": "app/lib/download-manager.js"},
   {"source": "app/lib/data-store.js"},
-  {"source": "app/lib/readability.js"},
+  {"source": "app/lib/extensions.js"},
 
   {"source": "app/assistants/app-assistant.js"},
   {"source": "app/assistants/stage-assistant.js"},

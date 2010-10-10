@@ -82,7 +82,7 @@ var Instapaper = Class.create({
     var folders = []
     var items = []
     var div = document.createElement("div")
-    div.innerHTML = response.responseText.replace(/<img/g, '')
+    div.innerHTML = response.responseText.replace(/<img.*>/g, '')
 
     $(div).select("#bookmark_list .tableViewCell").each(function(rawItem) {
       var item = {}
@@ -121,6 +121,17 @@ var Instapaper = Class.create({
         if(starUrl) {
           item.starred = starUrl.style.display != 'none' ? 'on' : ''
         }
+
+        rawItem.select(".moveTo").each(function(moveTo) {
+          item.moveTo = item.moveTo || []
+          var name = moveTo.innerHTML.strip()
+
+          if(name == "Read Later") {
+            name = "Unread"
+          }
+
+          item.moveTo.push({url: this.absoluteUrl(moveTo), name: name})
+        }.bind(this))
 
         items.push(item)
 

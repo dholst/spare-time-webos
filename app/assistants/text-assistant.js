@@ -85,6 +85,16 @@ var TextAssistant = Class.create(BaseAssistant, {
       ]}
     ]
 
+    if(this.item.moveTo) {
+      var moveSelections = {label: "Move It", items: []}
+
+      this.item.moveTo.each(function(moveTo) {
+        moveSelections.items.push({label: moveTo.name, command: moveTo.url})
+      })
+
+      items.push(moveSelections)
+    }
+
     this.controller.popupSubmenu({
       placeNear: $("header"),
       items: items,
@@ -106,9 +116,19 @@ var TextAssistant = Class.create(BaseAssistant, {
           case "send-to-sms":
             this.sendToSms()
             break
+
+          default:
+            this.moveToFolder(command)
+            break
         }
       }.bind(this)
     })
+  },
+
+  moveToFolder: function(url) {
+    if(url.startsWith("http://")){
+      this.callAndReturn(url)
+    }
   },
 
   copyUrl: function() {
@@ -217,12 +237,15 @@ var TextAssistant = Class.create(BaseAssistant, {
   },
 
   archive: function(item) {
-    new Ajax.Request(item.archiveUrl, {method: "get"})
-    this.controller.stageController.popScene(this.item)
+    this.callAndReturn(item.archiveUrl)
   },
 
   restore: function(item) {
-    new Ajax.Request(item.restoreUrl, {method: "get"})
+    this.callAndReturn(item.restoreUrl)
+  },
+
+  callAndReturn: function(url) {
+    new Ajax.Request(url, {method: "get"})
     this.controller.stageController.popScene(this.item)
   }
 })
