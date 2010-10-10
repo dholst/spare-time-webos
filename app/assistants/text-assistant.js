@@ -9,10 +9,8 @@ var TextAssistant = Class.create(BaseAssistant, {
   setup: function($super) {
     $super()
 
-    this.controller.update("header", this.item.title)
+    this.controller.update("title", this.item.title)
     this.controller.stageController.setWindowOrientation("free")
-    this.controller.setupWidget("loading", {spinnerSize: "small"}, this.spinner)
-    this.controller.setupWidget("web-view", {url: ""}, {})
 
     if(this.item.archiveUrl) {
       this.controller.setupWidget(Mojo.Menu.commandMenu, {}, {items: [{label: "Archive", command: "archive"}]});
@@ -20,9 +18,9 @@ var TextAssistant = Class.create(BaseAssistant, {
     else if(this.item.restoreUrl) {
       this.controller.setupWidget(Mojo.Menu.commandMenu, {}, {items: [{label: "Restore", command: "restore"}]});
     }
-    
-    this.controller.listen("web-view", Mojo.Event.webViewLoadStarted, this.loadStarted = this.loadStarted.bind(this))
-    this.controller.listen("web-view", Mojo.Event.webViewLoadStopped, this.loadComplete = this.loadComplete.bind(this))
+
+    this.controller.listen("header", Mojo.Event.tap, this.headerTapped = this.headerTapped.bind(this))
+    this.controller.listen("header", Mojo.Event.hold, this.linkOptions = this.linkOptions.bind(this))
   },
 
   activate: function($super) {
@@ -41,24 +39,150 @@ var TextAssistant = Class.create(BaseAssistant, {
   },
 
   loadUrl: function(url) {
-    this.controller.get("web-view").mojo.openURL(url)
+    this.spinnerOn("retrieving article")
+
+    new Ajax.Request(url, {
+      method: "GET",
+
+      onSuccess: function(response) {
+        this.controller.update('content', response.responseText)
+      }.bind(this),
+
+      onFailure: function() {
+        console.log("AHHHH CRAP")
+      },
+
+      onComplete: function() {
+        this.spinnerOff()
+      }.bind(this)
+    })
   },
 
   cleanup: function($super) {
     $super()
     this.controller.stageController.setWindowOrientation("up")
-    this.controller.stopListening("web-view", Mojo.Event.webViewLoadStarted, this.loadStarted)
-    this.controller.stopListening("web-view", Mojo.Event.webViewLoadStopped, this.loadComplete)
+    this.controller.stopListening("header", Mojo.Event.tap, this.headerTapped)
+    this.controller.stopListening("header", Mojo.Event.hold, this.linkOptions)
   },
 
-  loadStarted: function() {
-    this.spinner.spinning = true
-    this.controller.modelChanged(this.spinner)
+  linkOptions: function(event) {
+    this.headerHeld = true
+
+    var items = [
+      {label: "Copy It", command: "copy-url"},
+
+      {label: "Tweet It", items: [
+        {label: "Bad Kitty", command: "send-to-bad-kitty"}
+      ]},
+
+      {label: "Share It", items: [
+        {label: "Email", command: "send-to-email"},
+        {label: "SMS", command: "send-to-sms"}
+      ]}
+    ]
+
+    this.controller.popupSubmenu({
+      placeNear: $("header"),
+      items: items,
+
+      onChoose: function(command) {
+        switch(command) {
+          case "copy-url":
+            this.copyUrl()
+            break
+
+          case "send-to-bad-kitty":
+            this.sendToBadKitty()
+            break
+
+          case "send-to-email":
+            this.sendToEmail()
+            break
+
+          case "send-to-sms":
+            this.sendToSms()
+            break
+        }
+      }.bind(this)
+    })
   },
-  
-  loadComplete: function() {
-    this.spinner.spinning = false
-    this.controller.modelChanged(this.spinner)
+
+  copyUrl: function() {
+    this.controller.stageController.setClipboard(this.item.url);
+    SpareTime.notify("URL copied to clipboard")
+  },
+
+  sendToBadKitty: function() {
+    this.controller.serviceRequest("palm://com.palm.applicationManager", {
+      method: "open",
+
+      parameters: {
+        id: "com.superinhuman.badkitty",
+        params: {action: "tweet", tweet: this.item.title + "\n\n" + this.item.url}
+      },
+
+      onFailure: this.offerToInstallApp.bind(this, "Bad Kitty", "com.superinhuman.badkitty")
+    })
+  },
+
+  sendToEmail: function() {
+    this.controller.serviceRequest("palm://com.palm.applicationManager", {
+      method: "open",
+
+      parameters: {
+  			id: "com.palm.app.email",
+        params: {summary: this.item.title, text: this.item.title + "\n\n" + this.item.url}
+      }
+    })
+  },
+
+  sendToSms: function() {
+    this.controller.serviceRequest("palm://com.palm.applicationManager", {
+      method: "open",
+
+      parameters: {
+  			id: "com.palm.app.messaging",
+        params: {messageText: this.item.title + "\n\n" + this.item.url}
+      }
+    })
+  },
+
+  offerToInstallApp: function(name, id) {
+    this.controller.showAlertDialog({
+      title: $L(name + " is not installed"),
+      message: $L(name + " is not installed. Would you like to install it?"),
+
+      choices:[
+        {label:$L("Yes"), value:"yes", type:"affirmative"},
+        {label:$L("No"), value:"no", type:"dismissal"}
+      ],
+
+      onChoose: function(value){
+        if("yes" == value){
+          this.controller.serviceRequest("palm://com.palm.applicationManager", {
+            method:"open",
+            parameters:{target: "http://developer.palm.com/appredirect/?packageid=" + id}
+          })
+        }
+      }
+    })
+  },
+
+  headerTapped: function(event) {
+    if(this.headerHeld) {
+      this.headerHeld = false
+    }
+    else if(this.item.url) {
+      this.controller.serviceRequest("palm://com.palm.applicationManager", {
+        method: "open",
+        parameters: {
+          id: "com.palm.app.browser",
+          params: {
+            target: this.item.url
+          }
+        }
+      })
+    }
   },
 
   handleCommand: function($super, event) {

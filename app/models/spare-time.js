@@ -7,3 +7,7 @@ var SpareTime = {
     articleSaveFailed: "articleSaveFailed"
   }
 }
+
+SpareTime.notify = function(message) {
+  Mojo.Controller.getAppController().showBanner({messageText: message}, "", "sparetime")
+}
