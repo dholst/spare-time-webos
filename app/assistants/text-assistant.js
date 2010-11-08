@@ -32,6 +32,7 @@ var TextAssistant = Class.create(BaseAssistant, {
     this.controller.stopListening("header", Mojo.Event.hold, this.linkOptions)
     this.controller.stopListening(document, "keydown", this.keyDown)
     this.controller.stopListening(document, "keyup", this.keyUp)
+    this.removeAnchorFix()
   },
 
   activate: function($super) {
@@ -65,6 +66,7 @@ var TextAssistant = Class.create(BaseAssistant, {
 
       onComplete: function() {
         this.spinnerOff()
+        this.addAnchorFix()
       }.bind(this)
     })
   },
@@ -247,5 +249,92 @@ var TextAssistant = Class.create(BaseAssistant, {
   callAndReturn: function(url) {
     new Ajax.Request(url, {method: "get"})
     this.controller.stageController.popScene(this.item)
+  },
+
+  //
+  // Prevent tapping link while scrolling, from http://github.com/deliciousmorsel/Feeds/blob/master/app/assistants/view-article-assistant.js
+  //
+
+  getTimestamp: function() {
+    var d = new Date();
+    return Math.floor(d.getTime() / 1000);
+  },
+
+  addAnchorFix: function() {
+    this.anchorTap = this.anchorTap.bind(this)
+    this.onDragStart = this.onDragStart.bind(this)
+    this.onDragging = this.onDragging.bind(this)
+    this.onDragEnd = this.onDragEnd.bind(this)
+    this.onMouseUp = this.onMouseUp.bind(this)
+
+    $$("#content a").each(function(anchor) {
+      anchor.observe('click' , this.anchorTap)
+    }.bind(this))
+
+    var scroller = this.controller.getSceneScroller()
+    scroller.observe(Mojo.Event.dragStart , this.onDragStart)
+    scroller.observe(Mojo.Event.dragging , this.onDragging)
+    scroller.observe(Mojo.Event.dragEnd , this.onDragEnd)
+    scroller.observe('mouseup' , this.onMouseUp)
+  },
+
+  removeAnchorFix: function() {
+    $$("#content a").each(function(anchor) {
+      anchor.stopObserving('click' , this.anchorTap)
+    }.bind(this))
+
+    var scroller = this.controller.getSceneScroller()
+    scroller.stopObserving(Mojo.Event.dragStart , this.onDragStart)
+    scroller.stopObserving(Mojo.Event.dragging , this.onDragging)
+    scroller.stopObserving(Mojo.Event.dragEnd , this.onDragEnd)
+    scroller.stopObserving('mouseup' , this.onMouseUp)
+  },
+
+  anchorTap: function(e) {
+    if(this.lastDrag && this.lastDrag > this.getTimestamp() - 1) {
+      e.preventDefault()
+      e.stop()
+      return false
+    }
+  },
+
+  onDragStart: function(e) {
+    this.lastDrag = this.getTimestamp()
+    this.dragLocation = {start: {x:e.move.clientX , y:e.move.clientY , timeStamp: this.lastDrag}}
+  },
+
+  onDragging: function(e) {
+    this.lastDrag = this.getTimestamp()
+
+    if (this.dragLocation && this.dragLocation.start && Math.abs(e.move.clientY - this.dragLocation.start.y) > 80) {
+      this.dragLocation = false
+    }
+    else {
+      this.dragLocation.last = {x:e.move.clientX , y:e.move.clientY , timeStamp: this.lastDrag}
+    }
+  },
+
+  onMouseUp: function(e) {
+    if (!this.dragLocation || Math.abs(this.dragLocation.last.y - this.dragLocation.start.y) > 80) {
+      this.dragLocation = false
+      return
+    }
+
+    if (Math.abs(this.dragLocation.last.x - this.dragLocation.start.x) > 50 && (this.dragLocation.last.timeStamp-2) < this.dragLocation.start.timeStamp) {
+      if ((this.dragLocation.last.x - this.dragLocation.start.x) > 0) {
+       this.previousArticle()
+      }
+      else {
+       this.nextArticle()
+      }
+    }
+    else {
+      this.dragLocation = false
+    }
+  },
+
+  onDragEnd: function(e) {
+    this.lastDrag = this.getTimestamp()
+    this.onMouseUp(e)
   }
 })
