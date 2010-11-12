@@ -51,23 +51,30 @@ var TextAssistant = Class.create(BaseAssistant, {
   },
 
   loadUrl: function(url) {
-    this.spinnerOn("retrieving article")
+    var self = this;
+    self.spinnerOn("retrieving article")
 
     new Ajax.Request(url, {
       method: "GET",
 
       onSuccess: function(response) {
-        this.controller.update('content', response.responseText)
-      }.bind(this),
+        self.controller.update('content', response.responseText)
+      },
 
       onFailure: function() {
         console.log("AHHHH CRAP")
       },
 
       onComplete: function() {
-        this.spinnerOff()
-        this.addAnchorFix()
-      }.bind(this)
+        DataStore.get(self.item.id + "scroller", function(scrollState) {
+          self.spinnerOff()
+          self.addAnchorFix()
+
+          if(scrollState) {
+            self.controller.getSceneScroller().mojo.setState(scrollState, true)
+          }
+        })
+      }
     })
   },
 
@@ -227,7 +234,10 @@ var TextAssistant = Class.create(BaseAssistant, {
   },
 
   handleCommand: function($super, event) {
-    if(event.command == 'archive') {
+    if(Mojo.Event.back == event.type) {
+      DataStore.add(this.item.id + "scroller", this.controller.getSceneScroller().mojo.getState())
+    }
+    else if(event.command == 'archive') {
       this.archive(this.item)
     }
     else if(event.command == 'restore') {

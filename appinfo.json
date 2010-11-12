@@ -1,6 +1,6 @@
 {
 	"id": "com.semicolonapps.sparetime",
-	"version": "0.5.1",
+	"version": "0.5.2",
 	"vendor": "SemicolonApps",
 	"type": "web",
 	"main": "index.html",
