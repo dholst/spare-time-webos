@@ -3,19 +3,22 @@ var Syncer = {
     this.inProgress = this.inProgress || []
 
     if(this.inProgress.length == 0) {
-      items.each(function(item) {
-        this.inProgress.push(item.id)
-        this.syncIfNotAlready(item)
-      }.bind(this))
-
+      this.inProgress.push.apply(this.inProgress, items)
+      this.syncNextOne()
       this.deleteOldOnes(items.collect(function(item) {return item.id}))
+    }
+  },
+
+  syncNextOne: function() {
+    if(this.inProgress.length) {
+      this.syncIfNotAlready(this.inProgress[0])
     }
   },
 
   syncIfNotAlready: function(item) {
     ArticleSaver.isSaved(
       item.id,
-      function() {this.removeFromInProgress(item.id)}.bind(this),
+      function() {this.removeFromInProgress(item)}.bind(this),
       this.syncOne.bind(this, item)
     )
   },
@@ -35,19 +38,20 @@ var Syncer = {
           }, [])
         })
 
-        this.removeFromInProgress(item.id)
+        this.removeFromInProgress(item)
         Mojo.Event.send(document, SpareTime.Event.articleSaveComplete, {model: item})
       }.bind(this),
 
       function() {
-        this.removeFromInProgress(item.id)
+        this.removeFromInProgress(item)
         Mojo.Event.send(document, SpareTime.Event.articleSaveFailed, {model: item})
       }.bind(this)
     )
   },
 
-  removeFromInProgress: function(id) {
-    this.inProgress = this.inProgress.reject(function(inProgressId) {return inProgressId == id})
+  removeFromInProgress: function(item) {
+    this.inProgress = this.inProgress.reject(function(inProgressItem) {return inProgressItem.id == item.id})
+    this.syncNextOne()
   },
 
   deleteOldOnes: function(ids) {

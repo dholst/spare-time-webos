@@ -1,10 +1,10 @@
 var BaseAssistant = Class.create({
   initialize: function() {
-    this.appMenuItems = [
-      Mojo.Menu.editItem,
-      {label: "Logout", command: "logout"},
-      {label: "Help", command: Mojo.Menu.helpCmd}
-    ]
+    this.appMenuItems = []
+    this.appMenuItems.push(Mojo.Menu.editItem)
+    if(!this.hidePreferences) this.appMenuItems.push({label: "Preferences", command: "preferences"})
+    this.appMenuItems.push({label: "Logout", command: "logout"})
+    this.appMenuItems.push({label: "Help", command: Mojo.Menu.helpCmd})
   },
 
   setup: function() {
@@ -21,6 +21,7 @@ var BaseAssistant = Class.create({
   },
 
   activate: function() {
+    this.controller.stageController.setWindowOrientation(Preferences.allowLandscape() ? "free" : "up")
   },
 
   deactivate: function() {
@@ -58,6 +59,10 @@ var BaseAssistant = Class.create({
     if(Mojo.Event.command === event.type) {
       if(Mojo.Menu.helpCmd == event.command) {
         this.controller.stageController.pushScene("help")
+        event.stop()
+      }
+      else if("preferences" == event.command) {
+        this.controller.stageController.pushScene("preferences")
         event.stop()
       }
       else if("logout" == event.command) {

@@ -10,7 +10,6 @@ var TextAssistant = Class.create(BaseAssistant, {
     $super()
 
     this.controller.update("title", this.item.title)
-    this.controller.stageController.setWindowOrientation("free")
 
     if(this.item.archiveUrl) {
       this.controller.setupWidget(Mojo.Menu.commandMenu, {}, {items: [{label: "Archive", command: "archive"}]});
@@ -23,11 +22,12 @@ var TextAssistant = Class.create(BaseAssistant, {
     this.controller.listen("header", Mojo.Event.hold, this.linkOptions = this.linkOptions.bind(this))
     this.controller.listen(document, "keydown", this.keyDown = this.keyDown.bind(this))
     this.controller.listen(document, "keyup", this.keyUp = this.keyUp.bind(this))
+
+    this.setFontSize()
   },
 
   cleanup: function($super) {
     $super()
-    this.controller.stageController.setWindowOrientation("up")
     this.controller.stopListening("header", Mojo.Event.tap, this.headerTapped)
     this.controller.stopListening("header", Mojo.Event.hold, this.linkOptions)
     this.controller.stopListening(document, "keydown", this.keyDown)
@@ -35,7 +35,7 @@ var TextAssistant = Class.create(BaseAssistant, {
     this.removeAnchorFix()
   },
 
-  activate: function($super) {
+  activate: function($super, changes) {
     $super()
 
     ArticleSaver.isSaved(this.item.id,
@@ -48,6 +48,18 @@ var TextAssistant = Class.create(BaseAssistant, {
         this.loadUrl(this.item.textUrl)
       }.bind(this)
     )
+
+    if(changes && changes.fontSizeChanged) {
+      this.setFontSize()
+    }
+  },
+
+  setFontSize: function() {
+    var content = this.controller.get("content")
+    content.removeClassName("small")
+    content.removeClassName("medium")
+    content.removeClassName("large")
+    content.addClassName(Preferences.fontSize())
   },
 
   loadUrl: function(url) {
@@ -308,43 +320,19 @@ var TextAssistant = Class.create(BaseAssistant, {
     }
   },
 
-  onDragStart: function(e) {
+  onDragStart: function() {
     this.lastDrag = this.getTimestamp()
-    this.dragLocation = {start: {x:e.move.clientX , y:e.move.clientY , timeStamp: this.lastDrag}}
   },
 
-  onDragging: function(e) {
+  onDragging: function() {
     this.lastDrag = this.getTimestamp()
-
-    if (this.dragLocation && this.dragLocation.start && Math.abs(e.move.clientY - this.dragLocation.start.y) > 80) {
-      this.dragLocation = false
-    }
-    else {
-      this.dragLocation.last = {x:e.move.clientX , y:e.move.clientY , timeStamp: this.lastDrag}
-    }
   },
 
-  onMouseUp: function(e) {
-    if (!this.dragLocation || Math.abs(this.dragLocation.last.y - this.dragLocation.start.y) > 80) {
-      this.dragLocation = false
-      return
-    }
-
-    if (Math.abs(this.dragLocation.last.x - this.dragLocation.start.x) > 50 && (this.dragLocation.last.timeStamp-2) < this.dragLocation.start.timeStamp) {
-      if ((this.dragLocation.last.x - this.dragLocation.start.x) > 0) {
-       this.previousArticle()
-      }
-      else {
-       this.nextArticle()
-      }
-    }
-    else {
-      this.dragLocation = false
-    }
+  onMouseUp: function() {
   },
 
-  onDragEnd: function(e) {
+  onDragEnd: function() {
     this.lastDrag = this.getTimestamp()
-    this.onMouseUp(e)
+    this.onMouseUp()
   }
 })
