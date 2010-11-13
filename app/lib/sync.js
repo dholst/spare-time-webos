@@ -57,6 +57,7 @@ var Syncer = {
   deleteOldOnes: function(ids) {
     DataStore.get("savedArticles", function(savedArticles) {
       savedArticles.each(function(savedId) {
+        console.log(savedId + " saved")
         if(!ids.include(savedId)) {
           this.deleteOne(savedId)
         }
@@ -68,6 +69,7 @@ var Syncer = {
     DataStore.get("article" + id, function(article) {
       if(article) {
         DownloadManager.deleteDownload(article.ticket)
+        DataStore.add("article" + id, null)
 
         DataStore.get("savedArticles", function(savedArticles) {
           savedArticles = savedArticles.reject(function(savedArticle) {return savedArticle == id})

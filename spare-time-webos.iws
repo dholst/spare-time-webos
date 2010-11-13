@@ -60,19 +60,37 @@
   <component name="FileColors" enabled="true" enabledForTabs="true" />
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="spare-time.css" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/stylesheets/spare-time.css">
+      <file leaf-file-name="base-items-assistant.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/assistants/base-items-assistant.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="222" column="50" selection-start="3324" selection-end="3324" vertical-scroll-proportion="0.0">
+            <state line="126" column="11" selection-start="4229" selection-end="4229" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="base-items-assistant.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/assistants/base-items-assistant.js">
+      <file leaf-file-name="base-assistant.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/assistants/base-assistant.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="126" column="0" selection-start="4218" selection-end="4218" vertical-scroll-proportion="0.0">
+            <state line="0" column="6" selection-start="6" selection-end="6" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="unread-assistant.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/assistants/unread-assistant.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="34" column="14" selection-start="779" selection-end="779" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="appinfo.json" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/appinfo.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="1" column="36" selection-start="10" selection-end="37" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -87,7 +105,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="article-saver.js" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="article-saver.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/lib/article-saver.js">
           <provider selected="true" editor-type-id="text-editor">
             <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
@@ -96,28 +114,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="sync.js" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="sync.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/lib/sync.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="53" column="22" selection-start="1649" selection-end="1649" vertical-scroll-proportion="0.0">
+            <state line="71" column="42" selection-start="2162" selection-end="2162" vertical-scroll-proportion="0.70449173">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="instapaper.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/models/instapaper.js">
+      <file leaf-file-name="data-store.js" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/lib/data-store.js">
           <provider selected="true" editor-type-id="text-editor">
             <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="spare-time.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/models/spare-time.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="10" column="16" selection-start="200" selection-end="216" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -136,15 +145,6 @@
         <entry file="file://$PROJECT_DIR$/app/assistants/text-assistant.js">
           <provider selected="true" editor-type-id="text-editor">
             <state line="75" column="26" selection-start="2359" selection-end="2359" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="text-scene.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/views/text/text-scene.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="0" selection-start="329" selection-end="391" vertical-scroll-proportion="-9.4827585">
               <folding />
             </state>
           </provider>
@@ -170,11 +170,11 @@
         <option value="$PROJECT_DIR$/app/views/help/help-scene.html" />
         <option value="$PROJECT_DIR$/app/views/text/text-scene.html" />
         <option value="$PROJECT_DIR$/app/models/credentials.js" />
-        <option value="$PROJECT_DIR$/app/lib/sync.js" />
         <option value="$PROJECT_DIR$/app/views/items/item.html" />
         <option value="$PROJECT_DIR$/stylesheets/spare-time.css" />
         <option value="$PROJECT_DIR$/app/assistants/base-items-assistant.js" />
         <option value="$PROJECT_DIR$/app/assistants/text-assistant.js" />
+        <option value="$PROJECT_DIR$/app/lib/sync.js" />
       </list>
     </option>
   </component>
@@ -520,27 +520,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/assistants/add-assistant.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="2" selection-start="362" selection-end="362" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/assistants/login-assistant.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="2" selection-start="192" selection-end="192" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/models/preferences.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="52" selection-start="164" selection-end="164" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/views/add/add-scene.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="5" column="12" selection-start="168" selection-end="168" vertical-scroll-proportion="-4.3103447">
@@ -551,13 +530,6 @@
     <entry file="file://$PROJECT_DIR$/app/models/credentials.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="2" column="63" selection-start="123" selection-end="123" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/assistants/unread-assistant.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -583,30 +555,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/lib/sync.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="53" column="22" selection-start="1649" selection-end="1649" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/stylesheets/spare-time.css">
       <provider selected="true" editor-type-id="text-editor">
         <state line="222" column="50" selection-start="3324" selection-end="3324" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/assistants/base-items-assistant.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="126" column="0" selection-start="4218" selection-end="4218" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/help/help-scene.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="30" column="31" selection-start="948" selection-end="948" vertical-scroll-proportion="-4.3103447">
           <folding />
         </state>
       </provider>
@@ -628,6 +579,55 @@
     <entry file="file://$PROJECT_DIR$/app/lib/article-saver.js">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/help/help-scene.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="30" column="31" selection-start="948" selection-end="948" vertical-scroll-proportion="-4.3103447">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/assistants/base-items-assistant.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="126" column="11" selection-start="4229" selection-end="4229" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/assistants/base-assistant.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="6" selection-start="6" selection-end="6" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/appinfo.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1" column="36" selection-start="10" selection-end="37" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/assistants/unread-assistant.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="34" column="14" selection-start="779" selection-end="779" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/lib/data-store.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/lib/sync.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="71" column="42" selection-start="2162" selection-end="2162" vertical-scroll-proportion="0.70449173">
           <folding />
         </state>
       </provider>
