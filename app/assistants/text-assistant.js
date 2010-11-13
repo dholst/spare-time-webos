@@ -38,16 +38,18 @@ var TextAssistant = Class.create(BaseAssistant, {
   activate: function($super, changes) {
     $super()
 
-    ArticleSaver.isSaved(this.item.id,
-      function() {
-        var url = "file:///media/internal/files/.sparetime/.cache/" + this.item.id + "/index.html"
-        this.loadUrl(url)
-      }.bind(this),
+    if(!this.loaded) {
+      ArticleSaver.isSaved(this.item.id,
+        function() {
+          var url = "file:///media/internal/files/.sparetime/.cache/" + this.item.id + "/index.html"
+          this.loadUrl(url)
+        }.bind(this),
 
-      function() {
-        this.loadUrl(this.item.textUrl)
-      }.bind(this)
-    )
+        function() {
+          this.loadUrl(this.item.textUrl)
+        }.bind(this)
+      )
+    }
 
     if(changes && changes.fontSizeChanged) {
       this.setFontSize()
@@ -71,6 +73,7 @@ var TextAssistant = Class.create(BaseAssistant, {
 
       onSuccess: function(response) {
         self.controller.update('content', response.responseText)
+        self.loaded = true
       },
 
       onFailure: function() {
