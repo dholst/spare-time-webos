@@ -28,4 +28,20 @@ var AppAssistant = Class.create({
 	showMessage: function(message) {
 	  Mojo.Controller.getAppController().showBanner(message, {source: "sparetime"})
 	}
-})
+});
+
+//*****************************
+//insert touchpad detection
+//*****************************
+
+// chec device size, save into variable
+var thisDevice={};
+
+thisDevice.isTouchPad = function() {
+  if(Mojo.Environment.DeviceInfo.modelNameAscii.indexOf("ouch")>-1) {
+    return true;
+  }
+  if(Mojo.Environment.DeviceInfo.screenWidth==1024){ return true; }
+  if(Mojo.Environment.DeviceInfo.screenHeight==1024){ return true; }
+};
+
