@@ -10,14 +10,24 @@ var TextAssistant = Class.create(BaseAssistant, {
     $super()
 
     this.controller.update("title", this.item.title)
-
+if(thisDevice.isTouchPad()){
+    if(this.item.archiveUrl) {
+      this.controller.setupWidget(Mojo.Menu.commandMenu, {}, {items: [{label: "Back", command: "back"}, {label: "Archive", command: "archive"}]});
+    }
+    else if(this.item.restoreUrl) {
+      this.controller.setupWidget(Mojo.Menu.commandMenu, {}, {items: [{label: "Back", command: "back"}, {label: "Restore", command: "restore"}]});
+    }
+    else {
+     this.controller.setupWidget(Mojo.Menu.commandMenu, {}, {items: [{label: "Back", command: "back"}]});
+    }
+}else{
     if(this.item.archiveUrl) {
       this.controller.setupWidget(Mojo.Menu.commandMenu, {}, {items: [{label: "Archive", command: "archive"}]});
     }
     else if(this.item.restoreUrl) {
       this.controller.setupWidget(Mojo.Menu.commandMenu, {}, {items: [{label: "Restore", command: "restore"}]});
     }
-
+}
     this.controller.listen("header", Mojo.Event.tap, this.headerTapped = this.headerTapped.bind(this))
     this.controller.listen("header", Mojo.Event.hold, this.linkOptions = this.linkOptions.bind(this))
     this.controller.listen(document, "keydown", this.keyDown = this.keyDown.bind(this))
@@ -248,6 +258,9 @@ var TextAssistant = Class.create(BaseAssistant, {
     }
   },
 
+//******************************
+// command menu and back swipe
+//******************************
   handleCommand: function($super, event) {
     if(Mojo.Event.back == event.type) {
       DataStore.add(this.item.id + "scroller", this.controller.getSceneScroller().mojo.getState())
@@ -257,6 +270,9 @@ var TextAssistant = Class.create(BaseAssistant, {
     }
     else if(event.command == 'restore') {
       this.restore(this.item)
+    }
+    else if(event.command == 'back') {
+      this.controller.stageController.popScene()
     }
     else {
       $super(event)
@@ -273,7 +289,7 @@ var TextAssistant = Class.create(BaseAssistant, {
 
   callAndReturn: function(url) {
     new Ajax.Request(url, {method: "get"})
-    this.controller.stageController.popScene(this.item)
+    this.controller.stageController.popScene()
   },
 
   //
