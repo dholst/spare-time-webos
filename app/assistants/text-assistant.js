@@ -10,24 +10,27 @@ var TextAssistant = Class.create(BaseAssistant, {
     $super()
 
     this.controller.update("title", this.item.title)
-if(thisDevice.isTouchPad()){
-    if(this.item.archiveUrl) {
-      this.controller.setupWidget(Mojo.Menu.commandMenu, {}, {items: [{label: "Back", command: "back"}, {label: "Archive", command: "archive"}]});
+
+    if(thisDevice.isTouchPad()){
+      if(this.item.archiveUrl) {
+        this.controller.setupWidget(Mojo.Menu.commandMenu, {}, {items: [{label: "Back", command: "back"}, {label: "Archive", command: "archive"}]});
+      }
+      else if(this.item.restoreUrl) {
+        this.controller.setupWidget(Mojo.Menu.commandMenu, {}, {items: [{label: "Back", command: "back"}, {label: "Restore", command: "restore"}]});
+      }
+      else {
+        this.controller.setupWidget(Mojo.Menu.commandMenu, {}, {items: [{label: "Back", command: "back"}]});
+      }
     }
-    else if(this.item.restoreUrl) {
-      this.controller.setupWidget(Mojo.Menu.commandMenu, {}, {items: [{label: "Back", command: "back"}, {label: "Restore", command: "restore"}]});
+    else{
+      if(this.item.archiveUrl) {
+        this.controller.setupWidget(Mojo.Menu.commandMenu, {}, {items: [{label: "Archive", command: "archive"}]});
+      }
+      else if(this.item.restoreUrl) {
+        this.controller.setupWidget(Mojo.Menu.commandMenu, {}, {items: [{label: "Restore", command: "restore"}]});
+      }
     }
-    else {
-     this.controller.setupWidget(Mojo.Menu.commandMenu, {}, {items: [{label: "Back", command: "back"}]});
-    }
-}else{
-    if(this.item.archiveUrl) {
-      this.controller.setupWidget(Mojo.Menu.commandMenu, {}, {items: [{label: "Archive", command: "archive"}]});
-    }
-    else if(this.item.restoreUrl) {
-      this.controller.setupWidget(Mojo.Menu.commandMenu, {}, {items: [{label: "Restore", command: "restore"}]});
-    }
-}
+
     this.controller.listen("header", Mojo.Event.tap, this.headerTapped = this.headerTapped.bind(this))
     this.controller.listen("header", Mojo.Event.hold, this.linkOptions = this.linkOptions.bind(this))
     this.controller.listen(document, "keydown", this.keyDown = this.keyDown.bind(this))
@@ -49,7 +52,8 @@ if(thisDevice.isTouchPad()){
     $super()
 
     if(!this.loaded) {
-      ArticleSaver.isSaved(this.item.id,
+      ArticleSaver.isSaved(
+        this.item.id,
         function() {
           var url = "file:///media/internal/files/.sparetime/.cache/" + this.item.id + "/index.html"
           this.loadUrl(url)
@@ -137,23 +141,23 @@ if(thisDevice.isTouchPad()){
         switch(command) {
           case "copy-url":
             this.copyUrl()
-            break
+          break
 
           case "send-to-bad-kitty":
             this.sendToBadKitty()
-            break
+          break
 
           case "send-to-email":
             this.sendToEmail()
-            break
+          break
 
           case "send-to-sms":
             this.sendToSms()
-            break
+          break
 
           default:
             this.moveToFolder(command)
-            break
+          break
         }
       }.bind(this)
     })
@@ -188,7 +192,7 @@ if(thisDevice.isTouchPad()){
       method: "open",
 
       parameters: {
-  			id: "com.palm.app.email",
+        id: "com.palm.app.email",
         params: {summary: this.item.title, text: this.item.title + "\n\n" + this.item.url}
       }
     })
@@ -199,7 +203,7 @@ if(thisDevice.isTouchPad()){
       method: "open",
 
       parameters: {
-  			id: "com.palm.app.messaging",
+        id: "com.palm.app.messaging",
         params: {messageText: this.item.title + "\n\n" + this.item.url}
       }
     })
@@ -258,9 +262,6 @@ if(thisDevice.isTouchPad()){
     }
   },
 
-//******************************
-// command menu and back swipe
-//******************************
   handleCommand: function($super, event) {
     if(Mojo.Event.back == event.type) {
       DataStore.add(this.item.id + "scroller", this.controller.getSceneScroller().mojo.getState())

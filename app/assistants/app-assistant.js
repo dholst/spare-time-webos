@@ -2,11 +2,11 @@ var SpareTime = SpareTime || {}
 SpareTime.MainStageName = "main"
 
 var AppAssistant = Class.create({
-  handleLaunch: function(launchParameters) {    
+  handleLaunch: function(launchParameters) {
     if(launchParameters && "add_url" == launchParameters.action) {
       console.log("ADDING URL")
       var credentials = new Credentials()
-    
+
       if(credentials.username) {
         Instapaper.credentials = credentials
         new Instapaper().add(launchParameters.url, launchParameters.title, this.addSuccess.bind(this), this.addFailure.bind(this))
@@ -23,18 +23,13 @@ var AppAssistant = Class.create({
 
   addFailure: function() {
     this.showMessage("Unable to add URL to Spare Time")
-	},
+  },
 
-	showMessage: function(message) {
-	  Mojo.Controller.getAppController().showBanner(message, {source: "sparetime"})
-	}
+  showMessage: function(message) {
+    Mojo.Controller.getAppController().showBanner(message, {source: "sparetime"})
+  }
 });
 
-//*****************************
-//insert touchpad detection
-//*****************************
-
-// chec device size, save into variable
 var thisDevice={};
 
 thisDevice.isTouchPad = function() {

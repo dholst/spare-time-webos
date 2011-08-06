@@ -24,8 +24,9 @@ var PreferencesAssistant = Class.create(BaseAssistant, {
 
     this.controller.setupWidget("font-size", fontSizeChoices, this.fontSize)
     this.controller.listen("font-size", Mojo.Event.propertyChange, this.setFontSize = this.setFontSize.bind(this))
-    if(thisDevice.isTouchPad()){ 
-     this.controller.setupWidget(Mojo.Menu.commandMenu, {}, {items: [{label: "Save", command: "back"}]});
+
+    if(thisDevice.isTouchPad()){
+      this.controller.setupWidget(Mojo.Menu.commandMenu, {}, {items: [{label: "Save", command: "back"}]});
     }
   },
 
