@@ -1,11 +1,11 @@
 {
-	"id": "com.semicolonapps.sparetime",
-	"version": "0.5.2",
-	"vendor": "SemicolonApps",
-	"type": "web",
-	"main": "index.html",
-	"title": "Spare Time",
-	"icon": "sparetime_64.png",
-	"splashicon": "sparetime_250.png",
-	"uiRevision":"2"
+  "id": "com.semicolonapps.sparetime",
+  "version": "0.5.3",
+  "vendor": "SemicolonApps",
+  "type": "web",
+  "main": "index.html",
+  "title": "Spare Time",
+  "icon": "sparetime_64.png",
+  "splashicon": "sparetime_250.png",
+  "uiRevision":"2"
 }
