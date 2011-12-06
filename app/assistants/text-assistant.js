@@ -13,21 +13,21 @@ var TextAssistant = Class.create(BaseAssistant, {
 
     if(thisDevice.isTouchPad()){
       if(this.item.archiveUrl) {
-        this.controller.setupWidget(Mojo.Menu.commandMenu, {}, {items: [{label: "Back", command: "back"}, {label: "Archive", command: "archive"}]});
+        this.controller.setupWidget(Mojo.Menu.commandMenu, {menuClass: 'palm-white'}, {items: [{label: "Back", command: "back"}, {label: "Archive", command: "archive"}]});
       }
       else if(this.item.restoreUrl) {
-        this.controller.setupWidget(Mojo.Menu.commandMenu, {}, {items: [{label: "Back", command: "back"}, {label: "Restore", command: "restore"}]});
+        this.controller.setupWidget(Mojo.Menu.commandMenu, {menuClass: 'palm-white'}, {items: [{label: "Back", command: "back"}, {label: "Restore", command: "restore"}]});
       }
       else {
-        this.controller.setupWidget(Mojo.Menu.commandMenu, {}, {items: [{label: "Back", command: "back"}]});
+        this.controller.setupWidget(Mojo.Menu.commandMenu, {menuClass: 'palm-white'}, {items: [{label: "Back", command: "back"}]});
       }
     }
     else{
       if(this.item.archiveUrl) {
-        this.controller.setupWidget(Mojo.Menu.commandMenu, {}, {items: [{label: "Archive", command: "archive"}]});
+        this.controller.setupWidget(Mojo.Menu.commandMenu, {menuClass: 'palm-white'}, {items: [{label: "Archive", command: "archive"}]});
       }
       else if(this.item.restoreUrl) {
-        this.controller.setupWidget(Mojo.Menu.commandMenu, {}, {items: [{label: "Restore", command: "restore"}]});
+        this.controller.setupWidget(Mojo.Menu.commandMenu, {menuClass: 'palm-white'}, {items: [{label: "Restore", command: "restore"}]});
       }
     }
 
