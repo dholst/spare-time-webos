@@ -84,62 +84,70 @@ var Instapaper = Class.create({
     var div = document.createElement("div");
     div.innerHTML = response.responseText.replace(/<img.*>/g, '');
 
-    $(div).select("#bookmark_list .tableViewCell").each(function(rawItem) {
+    $(div).select("div.article_item").each(function(rawItem) {
       var item = {};
 
-      var title = rawItem.down("a.tableViewCellTitleLink");
+      item.id = rawItem.getAttribute("data-article-id");
+      var title = rawItem.down("div.article_inner_item").down("div.title_row").down("a");
 
       if(title) {
-        item.id = rawItem.id.match(/\d+/)[0];
-        item.title = title ? title.innerHTML.unescapeHTML().replace(/&nbsp;/g, ' ') : "";
-        item.url = title ? title.href : null;
+        item.title = title.innerHTML.unescapeHTML().replace(/&nbsp;/g, ' ');
 
-        var host = rawItem.down("span.host");
-        item.host = host ? host.innerHTML.strip() : "";
+        var host = rawItem.down("span.host").down("a").href;
+        item.url = host;
+        var start = host.indexOf("https://");
+        if (start < 0) {
+            start = host.indexOf("http://") + "http://".length;
+        } else {
+            start += "https://".length;
+        }
+        var end = host.indexOf("/", start);
+        item.host = host.substring(start, end).replace("www.","");
 
-        var textUrl = rawItem.down("a.textButton");
-        item.textUrl = "http://www.instapaper.com/m?u=" + escape(item.url);
+        var textUrl = this.absoluteUrl(title);
+        item.textUrl = textUrl;
 
-        var deleteUrl = rawItem.down("a.deleteLink");
+        var deleteUrl = rawItem.down("a.delete_link");
         item.deleteUrl = this.absoluteUrl(deleteUrl);
 
-        var archiveUrl = rawItem.down("a.archiveButton");
+        var archiveUrl = rawItem.down("a.archive_button");
 
-        if(archiveUrl && archiveUrl.innerHTML == "Delete") {
-          item.deleteUrl = this.absoluteUrl(archiveUrl);
-        }
-        else if(archiveUrl) {
+        if(archiveUrl) {
           item.archiveUrl = this.absoluteUrl(archiveUrl);
         }
 
-        var restoreUrl = rawItem.down("a.restoreButton");
+        var restoreUrl = rawItem.down("a.restore_button");
         item.restoreUrl = this.absoluteUrl(restoreUrl);
 
-        var starUrl = rawItem.down("a.starToggleStarred");
+        var starUrl = rawItem.down("a.star_toggle");
         item.starUrl = this.absoluteUrl(starUrl);
 
         if(starUrl) {
-          item.starred = starUrl.style.display != 'none' ? 'on' : '';
+          item.starred = starUrl.getAttribute("class").indexOf("starred") >= 0 ? 'on' : '';
         }
+          
+        //var preview = rawItem.down("div.article_preview");
+        //item.preview = preview ? preview.innerHTML : "";
+        //console.error("Preview: " + item.preview);
 
-        rawItem.select(".moveTo").each(function(moveTo) {
+        rawItem.select("a.moveTo").each(function(moveTo) {
           item.moveTo = item.moveTo || [];
-          var name = moveTo.innerHTML.strip();
+          var name = moveTo.down("span").innerHTML.strip();
 
           if(name == "Read Later") {
             name = "Unread";
           }
 
-          item.moveTo.push({url: this.absoluteUrl(moveTo), name: name});
+          item.moveTo.push({url: this.absoluteUrl(moveTo), name: name});   
         }.bind(this));
 
         items.push(item);
       }
     }.bind(this));
 
-    $(div).select("#folders a").each(function(folder) {
+    $(div).select("a.side_item").each(function(folder) {
       if(folder.href.include("/folder/")) {
-        folders.push({name: folder.innerHTML.strip(), url: this.absoluteUrl(folder)});
+        folders.push({name: folder.innerText.strip(), url: this.absoluteUrl(folder)});
       }
     }.bind(this));
 
